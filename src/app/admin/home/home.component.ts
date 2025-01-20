@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { RouterOutlet } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -10,11 +10,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [    
-    RouterOutlet,
+  imports: [
     ReactiveFormsModule,
     MatCardModule,
     MatInputModule,
@@ -23,10 +24,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatIconModule,
     MatToolbarModule,
     MatSnackBarModule,
-  ],
+    CommonModule,
+],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+
+  ngOnInit(): void {
+  }
 
 }

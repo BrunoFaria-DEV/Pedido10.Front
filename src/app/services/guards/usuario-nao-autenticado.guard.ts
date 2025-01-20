@@ -1,15 +1,15 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
 
-import { UsuarioService } from '../usuario.service';
+import { AuthUserService } from '../auth-user.service';
 
 export const usuarioNaoAutenticadoGuard: CanActivateFn = (route, state) => {
   // injeção de dependências
-  const usuarioService = inject(UsuarioService);
+  const authUserService = inject(AuthUserService);
   const router = inject(Router);
 
   // Verifica se o usuario esta logado
-  if(usuarioService.logado) {
+  if(authUserService.logado) {
     return router.parseUrl('');
   }
 

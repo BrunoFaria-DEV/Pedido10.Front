@@ -1,0 +1,20 @@
+<div>
+	<h2>Lista de Usuários</h2>
+
+	<!-- Mostra mensagem de carregamento -->
+	<p *ngIf="loading">Carregando usuários...</p>
+
+	<!-- Exibe mensagem se a lista estiver vazia -->
+	<p *ngIf="!loading && usuarios.length === 0">Nenhum usuário encontrado.</p>
+
+	<!-- Renderiza a lista de usuários -->
+	<ul *ngIf="!loading && usuarios.length > 0">
+		<li *ngFor="let usuario of usuarios">
+			<strong>Nome:</strong> {{ usuario.Nome }}<br />
+			<strong>Email:</strong> {{ usuario.Email }}
+		</li>
+	</ul>
+
+	<!-- Mensagem de erro -->
+	<p *ngIf="error" style="color: red;">Erro ao carregar usuários: {{ error }}</p>
+</div>

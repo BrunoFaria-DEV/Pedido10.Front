@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
-import { Usuario } from '../models/Usuario';
+import { Observable } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,44 +12,22 @@ export class UsuarioService {
 
   constructor(private httpClient: HttpClient, private router: Router) { }
 
-  logar(usuario: Usuario): Observable<any> {
-    return this.httpClient.post<any>(`${this.apiUrlUsuario}/login`, usuario).pipe(
+  GetAll(): Observable<any> {
+    return this.httpClient.get<any>(`${this.apiUrlUsuario}/all`)
+    /* esta sessão abaixo é exclusiva para garatir uma verificação
+     a mais sobre o usuário logado, mas pode funcionar sem ela */
+    .pipe(
       tap((resposta) => {
-        if (!resposta.sucesso) return;
-
-        localStorage.setItem('token', btoa(JSON.stringify(resposta.token)));
-        localStorage.setItem('usuario', btoa(JSON.stringify(resposta.usuario)));
-
-        // Redireciona para a página inicial
-        this.router.navigate(['']);
+        if (!resposta.sucesso) {
+          console.error('Erro ao obter a lista de usuários.');
+        }
+      }),
+      catchError((error) => {
+        console.error('Erro na requisição:', error);
+        throw error;
       })
-    )
+    );
+    //////////////////////////////////////////////////////////////
   }
 
-  // deslogar() {
-  //   localStorage.clear();
-  //   this.router.navigate(['login']);
-  // }
-
-  get obterUsuarioLogado(): Usuario | null {
-    const usuario = localStorage.getItem('usuario');
-    
-    return usuario ? JSON.parse(atob(usuario)) : null;
-  }
-
-  get obterIdUsuarioLogado(): string | null {
-    const usuario = this.obterUsuarioLogado;
-    
-    return usuario ? usuario.ID_Usuario : null; 
-  }
-
-  // get obterTokenUsuario(): string | null {
-  //   const tokenUsuario = localStorage.getItem('Token');
-
-  //   return tokenUsuario ?? null;
-  // }
-
-  get logado(): boolean {
-    return !!localStorage.getItem('token');
-  }
 }

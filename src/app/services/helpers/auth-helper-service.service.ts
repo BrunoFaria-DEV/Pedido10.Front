@@ -9,7 +9,7 @@ export class AuthHelperServiceService {
   constructor(private router: Router) { }
 
   get obterTokenUsuario(): string | null {
-    const tokenUsuario = localStorage.getItem('Token');
+    const tokenUsuario = localStorage.getItem('token');
 
     return tokenUsuario ?? null;
   }
