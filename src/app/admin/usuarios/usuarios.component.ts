@@ -40,24 +40,36 @@ export class UsuariosComponent {
     this.carregarUsuarios();
   }
 
+  // carregarUsuarios(): void {
+  //   this.loading = true;
+  //   this.error = null;
+
+  //   this.usuarioService.GetAll().subscribe({
+  //     next: (resposta) => {
+  //       if (resposta.sucesso) {
+  //         this.usuarios = resposta.usuarios;
+  //       } else {
+  //         this.error = 'Não foi possível carregar os usuários.';
+  //       }
+  //       this.loading = false;
+  //     },
+  //     error: (erro) => {
+  //       this.error = 'Ocorreu um erro na requisição.';
+  //       console.error(erro);
+  //       this.loading = false;
+  //     },
+  //   });
+  // }
+
   carregarUsuarios(): void {
     this.loading = true;
     this.error = null;
 
     this.usuarioService.GetAll().subscribe({
-      next: (resposta) => {
-        if (resposta.sucesso) {
-          this.usuarios = resposta.usuarios;
-        } else {
-          this.error = 'Não foi possível carregar os usuários.';
-        }
+      next: (request) => {
+        this.usuarios = request.usuarios;
         this.loading = false;
-      },
-      error: (erro) => {
-        this.error = 'Ocorreu um erro na requisição.';
-        console.error(erro);
-        this.loading = false;
-      },
+      }
     });
   }
 }
