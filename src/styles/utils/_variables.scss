@@ -1,0 +1,35 @@
+// Define theme colour scheme
+// Body
+$body-bg: #fff;
+
+// Colors
+$dark_blue: #003951;
+
+$primary: $dark_blue;
+
+
+$theme-color-primary: #153B50;
+$theme-color-sapphire: #2c6586;
+$theme-color-green: #0daa4c;
+
+$theme-text-color-primary: #252930;
+$theme-text-color-secondary: lighten($theme-text-color-primary, 25%);
+$theme-text-color-light: lighten($theme-text-color-primary, 40%);
+$theme-bg-light: #f5f6fe;
+$theme-border-color: lighten($theme-text-color-primary, 75%);
+$theme-color-new: #5ab66e;
+$theme-color-count: #fa591e;
+$theme-error: #EC575B;
+$smoky-white: #f5f5f5;
+
+$theme-success-color: #5cb377;
+$theme-warning-color: #EEBF41;
+$theme-info-color: #5b99ea;
+$theme-danger-color: #d26d69;
+
+$theme-color-pdf: #DA2D27;
+$theme-color-word: #66a0fd;
+$theme-color-ppt: #f4b400;
+$theme-color-excel: #0da95f;
+$theme-color-video: #935dc1;
+$theme-color-zip: #252930;

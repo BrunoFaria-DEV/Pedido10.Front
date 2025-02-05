@@ -1,20 +1,12 @@
-<div class="container">
-  <mat-toolbar color="primary" >
-    <span>Exemplo login</span>
-    <span class="espacamento-toolbar"></span>
-    <button mat-icon-button (click)="deslogar()">
-      <mat-icon>logout</mat-icon>
-    </button>
-  </mat-toolbar>
+<header class="app-header fixed-top">
+  <app-header></app-header>
   <app-sidebar></app-sidebar>
+</header>
 
-  <div class="wraper">
-    <ng-container>
+<div class="app-wrapper">
+  <div class="app-content pt-3 p-md-3 p-lg-4">
+    <div class="container-xl">
       <router-outlet></router-outlet>
-    </ng-container>
+    </div>
   </div>
 </div>
-
-<!-- 
-<mat-card-content>
-</mat-card-content> -->

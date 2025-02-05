@@ -1,4 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
-
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body.app {
+    min-height: 100vh !important;
+    height: 100% !important;
+    width: 100% !important;
+    background: #f5f6fe !important;
+    padding-top: 56px !important;
+    overflow-x: hidden !important;
+}

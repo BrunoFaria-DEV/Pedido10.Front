@@ -1,15 +1,17 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, HostListener, ElementRef, ViewChild } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { SidebarService } from 'app/services/layout/sidebar.service';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [
+  imports: [  
     MatSidenavModule, 
     MatListModule, 
     MatIconModule,
@@ -19,22 +21,45 @@ import { CommonModule } from '@angular/common';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent {
-  @ViewChild('sidenav') sidenav: MatSidenav | undefined;
-  isExpanded = true;
-  showSubmenu: boolean = false;
-  isShowing = false;
-  showSubSubMenu: boolean = false;
+export class SidebarComponent implements OnDestroy{
+  userRoles = ['super-admin', 'admin', 'suporte', 'desenvolvimento'];
 
-  mouseenter() {
-    if (!this.isExpanded) {
-      this.isShowing = true;
+  sidebarVisible: boolean = false;
+  private sidebarSubscription!: Subscription;
+
+  constructor(private sidebarService: SidebarService, private elRef: ElementRef) {
+    this.sidebarSubscription = this.sidebarService.sidebarVisible$.subscribe(
+      (isVisible) => {
+        this.sidebarVisible = isVisible;
+      }
+    );
+  }
+
+  hasRole(roles: string[]): boolean {
+    return roles.some(role => this.userRoles.includes(role));
+  }
+
+  // Capturar clique fora da sidebar
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    const targetElement = event.target as HTMLElement;
+    
+    if (
+      this.sidebarVisible && 
+      !this.elRef.nativeElement.contains(event.target) &&
+      !targetElement.closest('#sidepanel-toggler')  
+    ) {
+      this.sidebarService.closeSidebar();
     }
   }
 
-  mouseleave() {
-    if (!this.isExpanded) {
-      this.isShowing = false;
-    }
+  // Fechar sidebar ao clicar no botão de fechar
+  closeSidebar() {
+    this.sidebarService.closeSidebar();
   }
+
+  ngOnDestroy(): void {
+    this.sidebarSubscription.unsubscribe();
+  }
+
 }

@@ -8,15 +8,17 @@ import { usuarioAutenticadoGuard } from './services/guards/usuario-autenticado.g
 import { ClientesComponent } from './admin/clientes/clientes.component';
 import { ProdutosComponent } from './admin/produtos/produtos.component';
 import { UsuariosComponent } from './admin/usuarios/usuarios.component';
+import { AdicionarProdutosComponent } from './admin/produtos/adicionar-produtos/adicionar-produtos.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [usuarioNaoAutenticadoGuard] },
     {
         path: '', component: DashboardComponent, canActivate: [usuarioAutenticadoGuard], children: [
             { path: '', component: HomeComponent },
-            { path: 'clientes', component: ClientesComponent },
+            { path: 'clientes', component: ClientesComponent},
             { path: 'produtos', component: ProdutosComponent},
-            { path: 'usuarios', component: UsuariosComponent}
+            { path: 'produtos/novo', component: AdicionarProdutosComponent},
+            { path: 'usuarios', component: UsuariosComponent},
         ],
     },
     // { path: '**', component: PageNotFoundComponent },

@@ -1,39 +1,103 @@
-<mat-sidenav-container class="example-container" autosize>
-    <mat-sidenav #sidenav class="example-sidenav" mode="side" opened="true" (mouseenter)="mouseenter()"
-        (mouseleave)="mouseleave()">
-        <div class="brand-link">
-            <a routerLink="">
-                <img mat-card-image src="assets/img/mini-logo.svg" alt="logo Pedido10">
-            </a>
-        </div>
-        <mat-nav-list class="example-nav-list">
-            <a mat-list-item class="menu" routerLink="" routerLinkActive="active">
-                <mat-icon mat-list-icon>home</mat-icon>
-                <span class="list-item-span" *ngIf="isExpanded || isShowing">Início</span>
-            </a>
-            <a mat-list-item class="menu" routerLink="" routerLinkActive="active">
-                <mat-icon mat-list-icon>info</mat-icon>
-                <span class="list-item-span" *ngIf="isExpanded || isShowing">Informações Básicas</span>
-            </a>
-            <a mat-list-item class="menu" routerLink="clientes" routerLinkActive="active">
-                <mat-icon mat-list-icon>person</mat-icon>
-                <span class="list-item-span" *ngIf="isExpanded || isShowing">Clientes</span>
-            </a>
-            <mat-list-item class="menu" (click)="showSubmenu = !showSubmenu" >
-                <mat-icon mat-list-icon>home</mat-icon>
-                <span class="list-item-span" *ngIf="isExpanded || isShowing">
-                    Parent Menu
-                </span>
-                <mat-icon class="menu-button" [ngClass]="{ rotated: showSubmenu }"
-                    *ngIf="isExpanded || isShowing">expand_more</mat-icon>
-            </mat-list-item>
-            <div
-                class="submenu"
-                [ngClass]="{ expanded: showSubmenu }"
-                *ngIf="isShowing || isExpanded">
-                    <a mat-list-item routerLink="/submenu1" routerLinkActive="active">Submenu Item 1</a>
-                    <a mat-list-item routerLink="/submenu2" routerLinkActive="active">Submenu Item 2</a>
+<div id="app-sidepanel" class="app-sidepanel" [class.sidepanel-visible]="sidebarVisible">
+  <div id="sidepanel-drop" class="sidepanel-drop"></div>
+  <div class="sidepanel-inner d-flex flex-column">
+    <button id="sidepanel-close" class="sidepanel-close d-xl-none" (click)="closeSidebar()">&times;</button>
+    
+    <div class="app-branding">
+      <a class="app-logo" routerLink="">
+        <img class="logo-icon" src="assets/img/mini-logo.svg" alt="logo Pedido10">
+      </a>
+    </div>
+  
+    <nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
+      <ul class="app-menu list-unstyled accordion">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="">
+            <i class="fa-solid fa-house me-2"></i>
+            <span class="nav-link-text">Dashboard</span>
+          </a>
+        </li>
+  
+        <li class="nav-item" *ngIf="hasRole(['admin'])">
+          <a class="nav-link" routerLink="/admin/info/1">
+            <i class="fa-solid fa-circle-info me-2"></i>
+            <span class="nav-link-text">Informações</span>
+          </a>
+        </li>
+      </ul>
+  
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+  
+      <div class="sidebar-heading">Sistema</div>
+  
+      <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne">
+              <i class="fa-regular fa-user me-2"></i>
+              <span class="nav-link-text">Clientes</span>
+            </button>
+          </h2>
+          <div id="flush-collapseOne" class="accordion-collapse collapse">
+            <div class="accordion-body">
+              <a class="nav-link" routerLink="/admin/customers">
+                <i class="fa-solid fa-person me-2"></i>
+                <span class="nav-link-text">Clientes</span>
+              </a>
+              <a class="nav-link" routerLink="/admin/customer-accounts">
+                <i class="fa-regular fa-rectangle-list me-2"></i>
+                <span class="nav-link-text">Contas de Cliente</span>
+              </a>
             </div>
-        </mat-nav-list>
-    </mat-sidenav>
-</mat-sidenav-container>
+          </div>
+        </div>
+  
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo">
+              <i class="fa-regular fa-message me-2"></i>
+              <span class="nav-link-text">Disparos</span>
+            </button>
+          </h2>
+          <div id="flush-collapseTwo" class="accordion-collapse collapse">
+            <div class="accordion-body">
+              <a class="nav-link" routerLink="/admin/shipments">
+                <i class="fa-solid fa-paper-plane me-2"></i>
+                <span class="nav-link-text">Envios</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+    
+    <div class="app-sidepanel-footer" *ngIf="hasRole(['super-admin', 'admin', 'suporte', 'desenvolvimento'])">
+      <nav class="app-nav app-nav-footer">
+        <ul class="app-menu footer-menu list-unstyled">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin/audit">
+              <i class="fa-solid fa-magnifying-glass me-2"></i>
+              <span class="nav-link-text">Auditoria</span>
+            </a>
+          </li>
+          
+          <li class="nav-item" *ngIf="hasRole(['super-admin'])">
+            <a class="nav-link" routerLink="">
+              <i class="fa-solid fa-list-check me-2"></i>
+              <span class="nav-link-text">Permissões</span>
+            </a>
+          </li>
+  
+          <li class="nav-item" *ngIf="hasRole(['super-admin'])">
+            <a class="nav-link" routerLink="">
+              <i class="fa-solid fa-user-group me-2"></i>
+              <span class="nav-link-text">Usuários</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>

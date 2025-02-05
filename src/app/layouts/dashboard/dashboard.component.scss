@@ -1,8 +1,23 @@
-.espacamento-toolbar {
-  flex: 1 1 auto;
+@import "../../../styles/basic.scss";
+@import "../../../styles/dashboard.scss";
+
+body.app {
+    min-height: 100vh;
+    height: 100%;
+    width: 100%;
+    background: #f5f6fe;
+    padding-top: 56px;
+    overflow-x: hidden;
 }
 
-.wraper {
-  margin-left: 16rem;
-  padding-left: 16rem;
+.app-header {	
+	@include box-shadow(0 1px 4px 0 rgba(0,0,0,.1));
+    box-shadow: 0 1px 4px #0000001a;
+	border-bottom: 1px solid $theme-border-color;
+	height: 56px;
+	background: #fff;
 }
+
+.app-wrapper {
+    @include transition (all 0.4s ease-in-out);
+ }
