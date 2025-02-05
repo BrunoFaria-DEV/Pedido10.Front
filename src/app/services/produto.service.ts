@@ -24,7 +24,11 @@ export class ProductService {
     return this.http.get<any>(`${this.apiUrl}`)
   }
 
-  getByName(name: string): Observable<any> {
+  find(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
+
+  findByName(name: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/by-name?name=${encodeURIComponent(name)}`);
   }
 

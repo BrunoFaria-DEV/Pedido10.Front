@@ -1,6 +1,7 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 body.app {
+    -webkit-font-smoothing: antialiased;
     min-height: 100vh !important;
     height: 100% !important;
     width: 100% !important;

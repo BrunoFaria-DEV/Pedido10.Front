@@ -59,22 +59,4 @@ export class AdicionarProdutosComponent implements OnInit {
       this.produtoForm.markAllAsTouched(); // Marca os campos para exibir erros
     }
   }
-
-    // logar() {
-    //   if (this.formLogin.invalid) return;
-  
-    //   var usuario = this.formLogin.getRawValue() as IUsuario;
-  
-    //   this.authUserService.logar(usuario).subscribe((response) => {
-    //     if (!response.sucesso) {
-    //       this.snackBar.open(
-    //         'Falha na autenticação', 'Usuário ou senha incorretos.', 
-    //         { duration: 3000 }
-    //       );
-    //     }
-    //     else {
-    //       console.log(response)
-    //     }
-    //   });
-    // }
 }

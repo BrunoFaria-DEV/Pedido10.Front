@@ -1,0 +1,100 @@
+<h1 class="app-page-title">
+  {{ title }}
+  <a routerLink="/clientes" class="btn btn-sm app-btn-secondary float-end px-3">
+      <i class="fas fa-angle-double-left"></i> Voltar
+  </a>
+</h1>
+
+<div class="app-card shadow-sm p-4 border-left-decoration">
+  <div class="app-card-body">
+      <!-- Formulário com Reactive Forms -->
+      <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
+          
+          <!-- <div class="mb-3">
+              <label class="form-label">Tipo de Pessoa</label>
+              <input type="text" class="form-control" formControlName="Tipo_Pessoa"
+                  [ngClass]="{'is-invalid': clienteForm.get('Tipo_Pessoa')?.invalid && clienteForm.get('Tipo_Pessoa')?.touched}">
+              <div *ngIf="clienteForm.get('Tipo_Pessoa')?.invalid && clienteForm.get('Tipo_Pessoa')?.touched" class="invalid-feedback">
+                  O Tipo de Pessoa é obrigatório.
+              </div>
+          </div> -->
+<!-- 
+          <ng-select
+            [items]="cidades" 
+            bindLabel="nome" 
+            bindValue="id" 
+            [typeahead]="buscaCidades$"
+            (change)="onCidadeSelecionada($event)"
+            placeholder="Digite pelo menos 3 letras para buscar..."
+            [loading]="loading">
+          </ng-select> -->
+
+          <div class="mb-3">
+              <label class="form-label">Nome</label>
+              <input type="text" class="form-control" formControlName="Nome"
+                  [ngClass]="{'is-invalid': clienteForm.get('Nome')?.invalid && clienteForm.get('Nome')?.touched}">
+              <div *ngIf="clienteForm.get('Nome')?.invalid && clienteForm.get('Nome')?.touched" class="invalid-feedback">
+                  O Nome é obrigatório.
+              </div>
+          </div>
+
+          <div class="mb-3">
+              <label class="form-label">CPF</label>
+              <input type="text" class="form-control" formControlName="CPF"
+                  [ngClass]="{'is-invalid': clienteForm.get('CPF')?.invalid && clienteForm.get('CPF')?.touched}">
+          </div>
+
+          <div class="mb-3">
+              <label class="form-label">CNPJ</label>
+              <input type="text" class="form-control" formControlName="CNPJ"
+                  [ngClass]="{'is-invalid': clienteForm.get('CNPJ')?.invalid && clienteForm.get('CNPJ')?.touched}">
+          </div>
+
+          <div class="mb-3">
+              <label class="form-label">Data de Nascimento</label>
+              <input type="date" class="form-control" formControlName="Nascimento"
+                  [ngClass]="{'is-invalid': clienteForm.get('Nascimento')?.invalid && clienteForm.get('Nascimento')?.touched}">
+          </div>
+
+          <div class="mb-3">
+              <label class="form-label">E-mail</label>
+              <input type="email" class="form-control" formControlName="Email"
+                  [ngClass]="{'is-invalid': clienteForm.get('Email')?.invalid && clienteForm.get('Email')?.touched}">
+              <div *ngIf="clienteForm.get('Email')?.invalid && clienteForm.get('Email')?.touched" class="invalid-feedback">
+                  O E-mail é obrigatório.
+              </div>
+          </div>
+
+          <div class="mb-3">
+              <label class="form-label">Telefone</label>
+              <input type="text" class="form-control" formControlName="Telefone"
+                  [ngClass]="{'is-invalid': clienteForm.get('Telefone')?.invalid && clienteForm.get('Telefone')?.touched}">
+          </div>
+
+          <div class="mb-3">
+              <label class="form-label">Endereço</label>
+              <input type="text" class="form-control" formControlName="Endereco"
+                  [ngClass]="{'is-invalid': clienteForm.get('Endereco')?.invalid && clienteForm.get('Endereco')?.touched}">
+          </div>
+
+          <div class="mb-3">
+              <label class="form-label">Localizador</label>
+              <input type="text" class="form-control" formControlName="Localizador"
+                  [ngClass]="{'is-invalid': clienteForm.get('Localizador')?.invalid && clienteForm.get('Localizador')?.touched}">
+          </div>
+
+          <!-- <div class="mb-3">
+              <label class="form-label">Cidade</label>
+              <input type="text" class="form-control" formControlName="ID_Cidade"
+                  [ngClass]="{'is-invalid': clienteForm.get('ID_Cidade')?.invalid && clienteForm.get('ID_Cidade')?.touched}">
+          </div> -->
+
+          <div class="pt-4 text-end">
+              <button type="submit" class="btn app-btn-primary px-4" [disabled]="clienteForm.invalid">
+                  <i class="fas fa-check me-1"></i> Salvar
+              </button>
+          </div>
+
+      </form>
+  </div>
+</div>

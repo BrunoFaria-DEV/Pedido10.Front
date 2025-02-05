@@ -10,6 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 
 import Swal from 'sweetalert2';
+import { DeleteAlertsService } from 'app/services/alerts/delete-alerts.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-produtos',
@@ -31,7 +33,8 @@ export class ProdutosComponent implements OnInit {
   constructor(
     private productService: ProductService, 
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private deleteAlertsService: DeleteAlertsService
   ) {}
 
   ngOnInit(): void {
@@ -67,29 +70,17 @@ export class ProdutosComponent implements OnInit {
     this.router.navigate(['/produtos/editar', id]);
   }
 
-  excluirProduto(id: number): void {
-    Swal.fire({
-      title: 'Deseja Excluir esse Produto?',
-      text: 'O produto será excluido permanentemente do sistema!',
-      icon: 'warning',
-      confirmButtonText: 'Ok',
-      showCancelButton: true,
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        Swal.fire("O Produto foi excluido com sucesso!", "", "success");
-          this.productService.deleteProduto(id).subscribe(() => {
-            this.carregarProdutos();
-          });
-      } else if (result.isDenied) {
-        Swal.fire("Changes are not saved", "", "info");
+  async excluirProduto(id: number) {
+    try{
+      const response = await this.deleteAlertsService.delete('Produto');
+
+      if (response) {
+        await lastValueFrom(this.productService.deleteProduto(id));
+        this.carregarProdutos();
       }
-    });
-    // if (confirm('Tem certeza que deseja excluir este produto?')) {
-    //   this.productService.deleteProduto(id).subscribe(() => {
-    //     this.carregarProdutos();
-    //   });
-    // }
+
+    } catch(error) {
+      console.error("Erro ao excluir:", error);
+    }
   }
 }

@@ -21,3 +21,9 @@ body.app {
 .app-wrapper {
     @include transition (all 0.4s ease-in-out);
  }
+
+ @media (min-width: 1200px) { 
+	.app-wrapper {
+		margin-left: 250px;
+	}
+}

@@ -1,1 +1,68 @@
-<p>clientes works!</p>
+<h1 class="app-page-title">
+    {{ title }}
+    <a routerLink="/clientes/novo" class="btn btn-sm app-btn-secondary float-end px-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Nova Empresa">Novo</a>
+  </h1>
+
+  <div class="app-card app-card-orders-table border-left-decoration">
+    <div class="app-card-body">
+      <div class="table-responsive">
+        <table class="table app-table-hover table-custom table-action">
+          <thead>
+            <tr>
+              <!-- <th scope="col" class="cell">#</th> -->
+              <th scope="col" class="cell">Tipo do Cliente</th>
+              <th scope="col" class="cell">Nome do Cliente</th>
+              <th scope="col" class="cell">CPF</th>
+              <th scope="col" class="cell">CNPJ</th>
+              <th scope="col" class="cell">Data de Nascimento</th>
+              <th scope="col" class="cell">Email</th>
+              <th scope="col" class="cell">Telefone</th>
+              <th scope="col" class="cell">Endereço</th>
+              <th scope="col" class="cell">Cidade</th>
+              <th colspan="2" class="cell"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cliente of clientes">
+              <!-- <td scope="row" class="cell">{{ cliente.ID_Cliente }}</td> -->
+              <td class="cell">
+                <p class="text-xs text-secondary mb-0">{{ cliente.Tipo_Pessoa }}</p>
+              </td>
+              <td class="cell fw-medium">{{ cliente.Nome }}</td>
+              <td class="cell">
+                <p class="text-xs text-secondary mb-0">{{ cliente.CPF }}</p>
+              </td>
+              <td class="cell">
+                <p class="text-xs text-secondary mb-0">{{ cliente.CNPJ }}</p>
+              </td>
+              <td class="cell">
+                <p class="text-xs text-secondary mb-0">{{ cliente.Nascimento }}</p>
+              </td>
+              <td class="cell">
+                <p class="text-xs text-secondary mb-0">{{ cliente.Email }}</p>
+              </td>
+              <td class="cell">
+                <p class="text-xs text-secondary mb-0">{{ cliente.Telefone }}</p>
+              </td>
+              <td class="cell">
+                <p class="text-xs text-secondary mb-0">{{ cliente.Endereco }}</p>
+              </td>
+              <td class="cell">
+                <p class="text-xs text-secondary mb-0">{{ cliente.ID_Cidade | number:'1.2-2' }}</p>
+              </td>
+              <td class="cell cell-custom">
+                <a [routerLink]="['/clientes/editar', cliente.ID_Cliente]" class="btn app-btn-primary">
+                  Editar
+                </a>
+              </td>
+              <td class="cell cell-custom">
+                <button type="button" (click)="excluirProduto(cliente.ID_Cliente)" class="btn app-btn-danger">
+                  Deletar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
