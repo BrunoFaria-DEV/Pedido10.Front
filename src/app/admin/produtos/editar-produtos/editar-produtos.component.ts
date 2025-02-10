@@ -16,7 +16,7 @@ import { ProductService } from 'app/services/produto.service';
   templateUrl: './editar-produtos.component.html',
   styleUrl: './editar-produtos.component.scss'
 })
-export class EditarProdutosComponent  implements OnInit {
+export class EditarProdutosComponent implements OnInit {
   title = "Editar Produto";
   id!: number;
   produtoForm!: FormGroup;
@@ -29,47 +29,52 @@ export class EditarProdutosComponent  implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Captura o ID da URL
     this.route.paramMap.subscribe(params => {
       this.id = Number(params.get('id'));
-
-      // Inicializa o formulário antes de buscar os dados
+  
       this.produtoForm = this.fb.group({
-        Nome_Produto: ['', [Validators.required, Validators.maxLength(255)]],
-        Descricao: ['', Validators.maxLength(500)],
-        Custo_Producao: [null, [Validators.min(0)]],
-        Margem_Lucro: [null, [Validators.min(0)]],
-        Preco: [null, [Validators.required, Validators.min(0)]],
-        QTDE_Estoque: [null, [Validators.required, Validators.min(0)]],
+        Nome_Produto: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+        Descricao: ['', [Validators.minLength(3), Validators.maxLength(150)]],
+        Custo_Producao: [null, [Validators.min(0), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]],
+        Margem_Lucro: [null, [Validators.min(0), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]],
+        Preco: [null, [Validators.required, Validators.min(0), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]],
+        QTDE_Estoque: [null, [Validators.min(0)]],
       });
-
-      // Busca os dados do produto e preenche o formulário
+  
       this._produtoService.find(this.id).subscribe(produto => {
-        console.log("Dados do produto recebidos:", produto.produto.Result);
         if (produto.produto.Success) {
           this.produtoForm.patchValue(produto.produto.Result);
         }
       });
     });
   }
+  
 
   onSubmit() {
     if (this.produtoForm.valid) {
-      console.log('Produto Submetido', this.produtoForm.value);
-      // Aqui você pode chamar o serviço para salvar os dados
-      var produto = this.produtoForm.getRawValue() as IProduto;
-      this._produtoService.updateProduto(this.id, produto).subscribe((response) => {
-        if(!response.Success) {
-          console.log('falha na requisição', produto)
-        }
-        else {
-          console.log(response)
+      var produtoForm = this.produtoForm.getRawValue() as IProduto;
+      
+      this._produtoService.updateProduto(this.id, produtoForm).subscribe({
+        next: (response) => {
+          this._router.navigate(['/produtos'], { queryParams: { sucesso: '1' } });
+        },
+        error: (error) => {
+          if (error.status === 400) {
+            console.log('Erros de validação:');
+            Object.keys(error.error.errors).forEach((campo) => {
+              error.error.errors[campo].forEach((mensagem: string) => {
+                console.log(`Campo: ${campo} - Erro: ${mensagem}`);
+              });
+            });
+          }
         }
       });
-      this._router.navigate(['/produtos'], { queryParams: { sucesso: '1' } });
     } else {
-      console.log('Formulário Inválido', this.produtoForm.errors);
-      this.produtoForm.markAllAsTouched(); // Marca os campos para exibir erros
+      this.produtoForm.markAllAsTouched();
     }
+  }
+
+  hasError(campo: string, tipoErro: string) {
+    return this.produtoForm.get(campo)?.hasError(tipoErro) && this.produtoForm.get(campo)?.touched;
   }
 }
