@@ -6,8 +6,8 @@ export interface ICliente {
   CNPJ?: string;
   Nascimento?: Date;  
   Email: string;
-  Telefone?: string;
-  Endereco?: string;
+  Telefone: string;
+  Endereco: string;
   Localizador?: string;
   ID_Cidade?: number;
 }
