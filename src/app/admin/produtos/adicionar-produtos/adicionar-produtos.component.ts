@@ -39,26 +39,6 @@ export class AdicionarProdutosComponent implements OnInit {
     });
   }
 
-  // onSubmit() {
-  //   if (this.produtoForm.valid) {
-  //     console.log('Produto Submetido', this.produtoForm.value);
-  //     // Aqui você pode chamar o serviço para salvar os dados
-  //     var produto = this.produtoForm.getRawValue() as IProduto;
-  //     this._produtoService.addProduto(produto).subscribe((response) => {
-  //       if(!response.Success) {
-  //         console.log('falha na requisição', produto)
-  //       }
-  //       else {
-  //         console.log(response)
-  //       }
-  //     });
-  //     this._router.navigate(['/produtos'], { queryParams: { sucesso: '1' } });
-  //   } else {
-  //     console.log('Formulário Inválido', this.produtoForm.errors);
-  //     this.produtoForm.markAllAsTouched(); // Marca os campos para exibir erros
-  //   }
-  // }
-
   onSubmit() {
     if (this.produtoForm.valid) {
       var produtoForm = this.produtoForm.getRawValue() as IProduto;

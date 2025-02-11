@@ -14,6 +14,7 @@
             <th scope="col" class="cell">Descrição</th>
             <th scope="col" class="cell">Custo de Produção</th>
             <th scope="col" class="cell">Margem de Lucro</th>
+            <th scope="col" class="cell">Preço</th>
             <th scope="col" class="cell">Quantidade</th>
             <th colspan="2" class="cell"></th>
           </tr>
@@ -30,6 +31,9 @@
             </td>
             <td class="cell">
               <p class="text-xs text-secondary mb-0">{{ produto.Margem_Lucro | number:'1.2-2' }}</p>
+            </td>
+            <td class="cell">
+              <p class="text-xs text-secondary mb-0">{{ produto.Preco | number:'1.2-2' }}</p>
             </td>
             <td class="cell">
               <p class="text-xs text-secondary mb-0">{{ produto.QTDE_Estoque | number:'1.2-2' }}</p>
