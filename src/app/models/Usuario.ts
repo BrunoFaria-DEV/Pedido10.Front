@@ -6,5 +6,8 @@ export class Usuario implements IUsuario {
       public Nome: string,
       public Email: string,
       public Senha: string,
+      public Plano_Usuario: string,
+      public Status: string,
+      public Tipo_Usuario: string,
     ) {}
   }

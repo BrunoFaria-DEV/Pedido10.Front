@@ -13,6 +13,8 @@ import Swal from 'sweetalert2';
 import { DeleteAlertsService } from 'app/services/alerts/delete-alerts.service';
 import { lastValueFrom } from 'rxjs';
 import { ClienteService } from 'app/services/cliente.service';
+import { ICliente } from 'app/interfaces/ICliente';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-clientes',
@@ -28,8 +30,10 @@ import { ClienteService } from 'app/services/cliente.service';
   styleUrl: './clientes.component.scss'
 })
 export class ClientesComponent implements OnInit {
+  // clientes: ICliente[] = [];
   clientes: any[] = [];
   title: string = "Clientes";
+  errorMsg = "";
 
   constructor(
     private clienteService: ClienteService, 
@@ -47,11 +51,10 @@ export class ClientesComponent implements OnInit {
           icon: 'success',
           confirmButtonText: 'Ok'
         }).then(() => {
-          // Após o fechamento do alerta, limpamos a URL removendo o parâmetro
           this.router.navigate([], {
             relativeTo: this.route,
             queryParams: { sucesso: null },
-            queryParamsHandling: 'merge' // 'merge' irá manter outros parâmetros de query que possam existir
+            queryParamsHandling: 'merge'
           });
         });
       }
@@ -59,12 +62,17 @@ export class ClientesComponent implements OnInit {
     this.carregarClientes();
   }
 
-  carregarClientes(): void {
-    this.clienteService.getAll().subscribe( {
-      next: (data) => {
-      this.clientes = data.result;
-      console.log(data.result)
-    }});
+  carregarClientes() {
+    this.clienteService.getAll().subscribe({
+      next: (data) => this.clientes = data.result,
+      error: (err: HttpErrorResponse) => {
+        let error = '';
+        if (err.status === 400) {
+          error = 'Clietnes não encontrados';
+        }
+        this.errorMsg = error
+      }
+    });
   }
 
   editarProduto(id: number): void {

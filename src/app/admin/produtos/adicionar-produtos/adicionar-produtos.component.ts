@@ -34,8 +34,8 @@ export class AdicionarProdutosComponent implements OnInit {
       Descricao: ['', [Validators.minLength(3), Validators.maxLength(150)]],
       Custo_Producao: [null, [Validators.min(0), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]],
       Margem_Lucro: [null, [Validators.min(0), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]],
-      Preco: [null, [Validators.required, Validators.min(0), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]],
-      QTDE_Estoque: [null, [Validators.min(0)]],
+      Preco: [0, [Validators.required, Validators.min(0), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]],
+      QTDE_Estoque: [0, [Validators.required, Validators.min(0)]],
     });
   }
 

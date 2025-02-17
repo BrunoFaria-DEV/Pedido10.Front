@@ -12,6 +12,9 @@ import { AdicionarProdutosComponent } from './admin/produtos/adicionar-produtos/
 import { EditarProdutosComponent } from './admin/produtos/editar-produtos/editar-produtos.component';
 import { AdicionarClientesComponent } from './admin/clientes/adicionar-clientes/adicionar-clientes.component';
 import { EditarClientesComponent } from './admin/clientes/editar-clientes/editar-clientes.component';
+import { PedidosComponent } from './admin/pedidos/pedidos.component';
+import { AdicionarPedidosComponent } from './admin/pedidos/adicionar-pedidos/adicionar-pedidos.component';
+import { EditarPedidosComponent } from './admin/pedidos/editar-pedidos/editar-pedidos.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [usuarioNaoAutenticadoGuard] },
@@ -24,6 +27,9 @@ export const routes: Routes = [
             { path: 'produtos', component: ProdutosComponent},
             { path: 'produtos/novo', component: AdicionarProdutosComponent},
             { path: 'produtos/editar/:id', component: EditarProdutosComponent},
+            { path: 'pedidos', component: PedidosComponent},
+            { path: 'pedidos/novo', component: AdicionarPedidosComponent},
+            { path: 'pedidos/editar/:id', component: EditarPedidosComponent},
             { path: 'usuarios', component: UsuariosComponent},
         ],
     },

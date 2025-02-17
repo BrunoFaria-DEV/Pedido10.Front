@@ -23,45 +23,48 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let cliente of clientes">
-              <!-- <td scope="row" class="cell">{{ cliente.ID_Cliente }}</td> -->
-              <td class="cell">
-                <p class="text-xs text-secondary mb-0">{{ cliente.Tipo_Pessoa }}</p>
-              </td>
-              <td class="cell fw-medium">{{ cliente.Nome }}</td>
-              <td class="cell">
-                <p class="text-xs text-secondary mb-0">{{ cliente.CPF }}</p>
-              </td>
-              <td class="cell">
-                <p class="text-xs text-secondary mb-0">{{ cliente.CNPJ }}</p>
-              </td>
-              <td class="cell">
-                <p class="text-xs text-secondary mb-0">{{ cliente.Nascimento }}</p>
-              </td>
-              <td class="cell">
-                <p class="text-xs text-secondary mb-0">{{ cliente.Email }}</p>
-              </td>
-              <td class="cell">
-                <p class="text-xs text-secondary mb-0">{{ cliente.Telefone }}</p>
-              </td>
-              <td class="cell">
-                <p class="text-xs text-secondary mb-0">{{ cliente.Endereco }}</p>
-              </td>
-              <td class="cell">
-                <p class="text-xs text-secondary mb-0">{{ cliente.ID_Cidade | number:'1.2-2' }}</p>
-              </td>
-              <td class="cell cell-custom">
-                <a [routerLink]="['/clientes/editar', cliente.ID_Cliente]" class="btn app-btn-primary">
-                  Editar
-                </a>
-              </td>
-              <td class="cell cell-custom">
-                <button type="button" (click)="excluirProduto(cliente.ID_Cliente)" class="btn app-btn-danger">
-                  Deletar
-                </button>
-              </td>
-            </tr>
+            @if (!errorMsg) {
+              <tr *ngFor="let cliente of clientes">
+                <!-- <td scope="row" class="cell">{{ cliente.ID_Cliente }}</td> -->
+                <td class="cell">
+                  <p class="text-xs text-secondary mb-0">{{ cliente.Tipo_Pessoa }}</p>
+                </td>
+                <td class="cell fw-medium">{{ cliente.Nome }}</td>
+                <td class="cell">
+                  <p class="text-xs text-secondary mb-0">{{ cliente.CPF }}</p>
+                </td>
+                <td class="cell">
+                  <p class="text-xs text-secondary mb-0">{{ cliente.CNPJ }}</p>
+                </td>
+                <td class="cell">
+                  <p class="text-xs text-secondary mb-0">{{ cliente.Nascimento }}</p>
+                </td>
+                <td class="cell">
+                  <p class="text-xs text-secondary mb-0">{{ cliente.Email }}</p>
+                </td>
+                <td class="cell">
+                  <p class="text-xs text-secondary mb-0">{{ cliente.Telefone }}</p>
+                </td>
+                <td class="cell">
+                  <p class="text-xs text-secondary mb-0">{{ cliente.Endereco }}</p>
+                </td>
+                <td class="cell">
+                  <p class="text-xs text-secondary mb-0">{{ cliente.ID_Cidade | number:'1.2-2' }}</p>
+                </td>
+                <td class="cell cell-custom">
+                  <a [routerLink]="['/clientes/editar', cliente.ID_Cliente]" class="btn app-btn-primary">
+                    Editar
+                  </a>
+                </td>
+                <td class="cell cell-custom">
+                  <button type="button" (click)="excluirProduto(cliente.ID_Cliente)" class="btn app-btn-danger">
+                    Deletar
+                  </button>
+                </td>
+              </tr>
+            }
           </tbody>
+          <span *ngIf="errorMsg">{{ errorMsg }}</span>
         </table>
       </div>
     </div>

@@ -7,27 +7,15 @@
 
 <div class="app-card shadow-sm p-4 border-left-decoration">
   <div class="app-card-body">
-      <!-- Formulário com Reactive Forms -->
       <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
           
-          <!-- <div class="mb-3">
-              <label class="form-label">Tipo de Pessoa</label>
-              <input type="text" class="form-control" formControlName="Tipo_Pessoa"
-                  [ngClass]="{'is-invalid': clienteForm.get('Tipo_Pessoa')?.invalid && clienteForm.get('Tipo_Pessoa')?.touched}">
-              <div *ngIf="clienteForm.get('Tipo_Pessoa')?.invalid && clienteForm.get('Tipo_Pessoa')?.touched" class="invalid-feedback">
-                  O Tipo de Pessoa é obrigatório.
-              </div>
-          </div> -->
-<!-- 
-          <ng-select
-            [items]="cidades" 
-            bindLabel="nome" 
-            bindValue="id" 
-            [typeahead]="buscaCidades$"
-            (change)="onCidadeSelecionada($event)"
-            placeholder="Digite pelo menos 3 letras para buscar..."
-            [loading]="loading">
-          </ng-select> -->
+          <div class="mb-3">
+            <label class="form-label">Tipo</label>
+            <select class="form-select" aria-label="Default select example" formControlName="Tipo_Pessoa">
+                <option selected [ngValue]="true">Pessoa Fisica</option>
+                <option [ngValue]="false">Pessoa Juridica</option>
+              </select>
+          </div>
 
           <div class="mb-3">
               <label class="form-label">Nome</label>
@@ -83,11 +71,12 @@
                   [ngClass]="{'is-invalid': clienteForm.get('Localizador')?.invalid && clienteForm.get('Localizador')?.touched}">
           </div>
 
-          <!-- <div class="mb-3">
-              <label class="form-label">Cidade</label>
-              <input type="text" class="form-control" formControlName="ID_Cidade"
-                  [ngClass]="{'is-invalid': clienteForm.get('ID_Cidade')?.invalid && clienteForm.get('ID_Cidade')?.touched}">
-          </div> -->
+          <div class="mb-3">
+                <label class="form-label">Cidade</label>
+                <select class="form-select" aria-label="Default" formControlName="ID_Cidade">
+                    <option *ngFor="let cidade of cidades" [ngValue]="cidade.ID_Cidade">{{cidade.Nome_Cidade}}</option>
+                </select>
+          </div>
 
           <div class="pt-4 text-end">
               <button type="submit" class="btn app-btn-primary px-4" [disabled]="clienteForm.invalid">

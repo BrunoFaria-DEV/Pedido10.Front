@@ -1,0 +1,62 @@
+<h1 class="app-page-title">
+    {{ title }}
+    <a routerLink="/produtos" class="btn btn-sm app-btn-secondary float-end px-3">
+        <i class="fas fa-angle-double-left"></i> Voltar
+    </a>
+  </h1>
+  
+  <div class="app-card shadow-sm p-4 border-left-decoration">
+    <div class="app-card-body">
+        <form [formGroup]="pedidoForm">
+            
+            <div class="mb-3">
+                <label class="form-label">Nome do Cliente</label>
+                <select class="form-control" name="cliente" id="cliente" formControlName="cliente" 
+                [ngClass]="{'is-invalid': hasError('cliente', 'required')}">
+                    <option value="1">Cassandra</option>
+                    <option value="2">Jordan</option>
+                    <option value="3">Arnold</option>
+                    <option value="4">Larissa</option>
+                </select>
+                <!-- <input type="text" id="cliente" class="form-control" formControlName="cliente"
+                [ngClass]="{'is-invalid': hasError('cliente', 'required')}"> -->
+                <div *ngIf="hasError('cliente', 'required')" class="invalid-feedback">
+                    O cliente é obrigatório.
+                </div>
+            </div>
+            <!-- PRODUTOS -->
+            <label class="form-label">Produtos</label>                
+            <button class="btn btn-sm app-btn-primary float-end px-3" type="button" (click)="adicionarProduto()"> + </button>
+            <table class="table table-no-border table-action" formArrayName="produtos">
+                <tbody>
+                    <tr *ngFor="let produto of produtos.controls; let i = index" [formGroupName]="i">
+                        <td>
+                            <input class="form-control" type="text" formControlName="produto" placeholder="Produto">
+                        </td>
+                        <td>
+                            <input class="form-control" type="number" formControlName="quantidade" placeholder="Quantidade">
+                        </td>
+                        <td>
+                            <input class="form-control" type="number" formControlName="preco" placeholder="Preço"
+                            [ngClass]="{'is-invalid': hasErrorProduto(i, 'preco', 'required')}">
+                            <div *ngIf="hasErrorProduto(i, 'preco', 'required')" class="invalid-feedback">
+                                O preço é obrigatório.
+                            </div>
+                        </td>
+                        <td>
+                            <button class="btn app-btn-danger" type="button" (click)="removerProduto(i)">Remover</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+  
+            <!-- Botão de Enviar -->
+            <div class="pt-4 text-end">
+                <button type="submit" (click)="finalizarVenda()">Finalizar Venda</button>
+            </div>
+  
+        </form>
+    </div>
+  </div>
+  

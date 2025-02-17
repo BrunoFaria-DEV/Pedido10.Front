@@ -48,27 +48,27 @@ export class EditarClientesComponent implements OnInit {
       });
 
       // Busca os dados do cliente e preenche o formulário
-      this._clienteService.find(this.id).subscribe(cliente => {
-        console.log("Dados do Cliente recebidos:", cliente.cliente.Result);
-        if (cliente.cliente.Success) {
-          this.clienteForm.patchValue(cliente.cliente.Result);
-        }
-      });
+      // this._clienteService.find(this.id).subscribe(cliente => {
+      //   console.log("Dados do Cliente recebidos:", cliente.cliente.Result);
+      //   if (cliente.cliente.Success) {
+      //     this.clienteForm.patchValue(cliente.cliente.Result);
+      //   }
+      // });
     });
   }
 
   onSubmit() {
     if (this.clienteForm.valid) {
       console.log('Cliente Submetido', this.clienteForm.value);
-      // Aqui você pode chamar o serviço para salvar os dados
+
       var cliente = this.clienteForm.getRawValue() as ICliente;
       this._clienteService.updateCliente(this.id, cliente).subscribe((response) => {
-        if(!response.Success) {
-          console.log('falha na requisição', cliente)
-        }
-        else {
-          console.log(response)
-        }
+        // if(!response.Success) {
+        //   console.log('falha na requisição', cliente)
+        // }
+        // else {
+        //   console.log(response)
+        // }
       });
       this._router.navigate(['/clientes'], { queryParams: { sucesso: '1' } });
     } else {

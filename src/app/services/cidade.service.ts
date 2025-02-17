@@ -1,16 +1,20 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError, tap, map } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CidadeService {
-  private apiUrl = 'https://localhost:7102/api/Cidade';  // URL da API
+  private apiUrl = 'https://localhost:7102/api/Cidade';
 
   constructor(private http: HttpClient) {}
 
-  buscarCidades(termo: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}?search=${termo}`);
+  getAll(): Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}`);
+  }
+
+  find(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 }

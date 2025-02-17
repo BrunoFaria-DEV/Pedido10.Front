@@ -1,5 +1,5 @@
-export interface ICliente {
-  ID_Cliente: number;
+export interface IClienteCreate {
+  ID_Cliente?: number;
   Tipo_Pessoa: boolean;  
   Nome: string;    
   CPF?: string;

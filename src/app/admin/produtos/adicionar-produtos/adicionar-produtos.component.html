@@ -69,7 +69,10 @@
           <div class="mb-3">
             <label class="form-label">Quantidade em Estoque</label>
             <input type="number" class="form-control" formControlName="QTDE_Estoque" min="0" 
-              [ngClass]="{'is-invalid': hasError('QTDE_Estoque', 'min')}">
+              [ngClass]="{'is-invalid': hasError('QTDE_Estoque', 'required') || hasError('QTDE_Estoque', 'min')}">
+            <div *ngIf="hasError('QTDE_Estoque', 'required')" class="invalid-feedback">
+                O preço é obrigatório.
+            </div>
             <div *ngIf="hasError('QTDE_Estoque', 'min')" class="invalid-feedback">
               A quantidade não pode ser negativa.
             </div>
