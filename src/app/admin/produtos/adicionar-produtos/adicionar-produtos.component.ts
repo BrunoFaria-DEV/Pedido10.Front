@@ -37,6 +37,26 @@ export class AdicionarProdutosComponent implements OnInit {
       Preco: [0, [Validators.required, Validators.min(0), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]],
       QTDE_Estoque: [0, [Validators.required, Validators.min(0)]],
     });
+
+    this.produtoForm.get('Custo_Producao')?.valueChanges.subscribe(() => this.calcularPreco());
+    this.produtoForm.get('Margem_Lucro')?.valueChanges.subscribe(() => this.calcularPreco());
+  }
+
+  calcularPreco(): void {
+    const custo = this.produtoForm.get('Custo_Producao')?.value;
+    const margem = this.produtoForm.get('Margem_Lucro')?.value;
+
+    if (custo !== null && margem !== null) {
+      const preco = custo * (1 + margem / 100);
+      this.produtoForm.get('Preco')?.setValue(preco.toFixed(2)); // Arredonda para 2 casas decimais
+    }
+    else if(custo !== null ) {
+      const preco = custo;
+      this.produtoForm.get('Preco')?.setValue(preco.toFixed(2)); 
+    }
+    else {
+      this.produtoForm.get('Preco')?.setValue(0); 
+    }
   }
 
   onSubmit() {

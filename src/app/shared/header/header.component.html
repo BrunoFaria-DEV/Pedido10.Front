@@ -9,9 +9,6 @@
                 </div>
 
                 <div class="app-utilities d-flex align-items-center col-auto">
-
-                    <div id="time" class="me-4 fw-medium"></div>
-
                     <div class="app-utility-item app-user-dropdown dropdown">
                         <a class="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown" href="javascript:void(0)" role="button" aria-expanded="false">
                             <img src="assets/img/default-user.jpg" alt="user profile" class="rounded-circle">
@@ -19,7 +16,12 @@
                         <ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
                             <!-- <li><a class="dropdown-item" href="{{ route('admin.users.edit', auth()->user()->id) }}">Editar Conta</a></li> -->
                             <li><hr class="dropdown-divider"></li>
-                            <li><button class="app-btn-primary" (click)="deslogar()">Sair</button></li>
+                            <li>
+                                <a class="dropdown-item" href="javascript:void(0)" (click)="deslogar()">
+                                    <fa-icon class="text-start me-2" [icon]="faRightFromBracket"/>
+                                    <span class="text-end">Sair</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>

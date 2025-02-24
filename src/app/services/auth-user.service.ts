@@ -44,6 +44,12 @@ export class AuthUserService {
     return usuario ? usuario.ID_Usuario : null;
   }
 
+  get obterStatusUsuarioLogado(): string | null {
+    const usuario = this.obterUsuarioLogado;
+
+    return usuario ? usuario.Status : null;
+  }
+
   get logado(): boolean {
     return !!localStorage.getItem('token');
   }

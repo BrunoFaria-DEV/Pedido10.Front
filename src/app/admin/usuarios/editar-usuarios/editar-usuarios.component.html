@@ -1,0 +1,130 @@
+<h1 class="app-page-title">
+    {{ title }}
+    <a routerLink="/usuarios" class="btn btn-sm app-btn-secondary float-end px-3">
+        <i class="fas fa-angle-double-left"></i> Voltar
+    </a>
+  </h1>
+  
+  <div class="app-card shadow-sm p-4 border-left-decoration">
+    <div class="app-card-body">
+        <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
+            
+            <!-- <div class="mb-3">
+                <label class="form-label">Tipo de Usuario</label>
+                <select class="form-select" aria-label="Default" formControlName="Tipo_Usuario">
+                    @for (tipoUsuario of tipoUsuarios; track $index) {
+                        @if ($index === 0) {
+                            <option selected [ngValue]="tipoUsuario">{{tipoUsuario}}</option>
+                        }@else {
+                            <option [ngValue]="tipoUsuario">{{tipoUsuario}}</option>
+                        }
+                    }
+                </select>
+            </div> -->
+
+            <!-- versão resuzida -->
+            <div class="mb-3"> 
+                <label class="form-label">Tipo de Usuario</label>
+                <select class="form-select" aria-label="Default" formControlName="Tipo_Usuario"
+                [ngClass]="{'is-invalid': usuarioForm.get('Tipo_Usuario')?.invalid && usuarioForm.get('Tipo_Usuario')?.touched}">
+                    <option *ngFor="let tipoUsuario of tipoUsuarios" [ngValue]="tipoUsuario">{{tipoUsuario}}</option>
+                </select>
+                <!-- Errors -->
+                <div *ngIf="usuarioForm.get('Tipo_Usuario')?.invalid && usuarioForm.get('Tipo_Usuario')?.touched" class="invalid-feedback">
+                    <div *ngIf="usuarioForm.get('Tipo_Usuario')?.errors?.['maxlength']">
+                        A Opção Tipo de usuário deve ter no máximo 14 caracteres.
+                    </div>
+                    <div *ngIf="usuarioForm.get('Tipo_Usuario')?.errors?.['required']">
+                        O Email deve ter no máximo 14 caracteres.
+                    </div>
+                </div>
+            </div>
+  
+            <div class="mb-3">
+                <label class="form-label">Nome</label>
+                <input type="text" class="form-control" formControlName="Nome"
+                    [ngClass]="{'is-invalid': usuarioForm.get('Nome')?.invalid && usuarioForm.get('Nome')?.touched}">
+                <div *ngIf="usuarioForm.get('Nome')?.invalid && usuarioForm.get('Nome')?.touched" class="invalid-feedback">
+                    <div *ngIf="usuarioForm.get('Nome')?.errors?.['required']">
+                        O nome de usuário é obrigatório.
+                    </div>
+                    <div *ngIf="usuarioForm.get('Nome')?.errors?.['maxlength']">
+                        O nome de usuário deve ter no máximo 120 caracteres.
+                    </div>
+                </div>
+            </div>
+  
+            <div class="mb-3">
+                <label class="form-label">E-mail</label>
+                <input type="email" class="form-control" formControlName="Email"
+                    [ngClass]="{'is-invalid': usuarioForm.get('Email')?.invalid && usuarioForm.get('Email')?.touched}">
+                  <div *ngIf="usuarioForm.get('Email')?.invalid && usuarioForm.get('Email')?.touched" class="invalid-feedback">
+                        <div *ngIf="usuarioForm.get('Email')?.errors?.['email']">
+                            O Email precisa ter um formato válido.
+                        </div>
+                        <div *ngIf="usuarioForm.get('Email')?.errors?.['required']">
+                            O Email é obrigatório.
+                        </div>
+                        <div *ngIf="usuarioForm.get('Email')?.errors?.['maxlength']">
+                            O Email deve ter no máximo 50 caracteres.
+                        </div>
+                        <div *ngIf="usuarioForm.get('Email')?.errors?.['Email']">
+                            {{ usuarioForm.get('Email')?.errors?.['Email'] }}
+                        </div>
+                  </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Senha</label>
+                <input type="password" class="form-control" formControlName="Senha"
+                    [ngClass]="{'is-invalid': usuarioForm.get('Senha')?.invalid && usuarioForm.get('Senha')?.touched}" (input)="confirmPassword()">
+
+                <div *ngIf="usuarioForm.get('Senha')?.invalid && usuarioForm.get('Senha')?.touched" class="invalid-feedback">
+                    <div *ngIf="usuarioForm.get('Senha')?.errors?.['required']">
+                        A Senha é obrigatória.
+                    </div>
+                    <div *ngIf="usuarioForm.get('Senha')?.errors?.['minlength']">
+                        A Senha deve ter pelo menos 8 caracteres.
+                    </div>
+                    <div *ngIf="usuarioForm.get('Senha')?.errors?.['maxlength']">
+                        A Senha deve ter no máximo 30 caracteres.
+                    </div>
+                    <div *ngIf="usuarioForm.get('Senha')?.errors?.['Senha']">
+                          {{ usuarioForm.get('Senha')?.errors?.['Senha'] }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Confirmar Senha</label>
+                <input type="password" class="form-control" formControlName="ConfirmarSenha"
+                    [ngClass]="{'is-invalid': usuarioForm.get('ConfirmarSenha')?.invalid}" (input)="confirmPassword()">
+
+                <div *ngIf="usuarioForm.get('ConfirmarSenha')?.invalid" class="invalid-feedback">
+                    <div *ngIf="usuarioForm.get('ConfirmarSenha')?.errors?.['required']">
+                        A confirmação de senha é obrigatória.
+                    </div>
+                    <div *ngIf="usuarioForm.get('ConfirmarSenha')?.errors?.['minlength']">
+                        A Senha deve ter pelo menos 8 caracteres.
+                    </div>
+                    <div *ngIf="usuarioForm.get('ConfirmarSenha')?.errors?.['maxlength']">
+                        A Senha deve ter no máximo 30 caracteres.
+                    </div>
+                    <div *ngIf="usuarioForm.get('ConfirmarSenha')?.errors?.['confirmPassword']">
+                        A senha não está correspondendo com a confirmação.
+                    </div>
+                    <div *ngIf="usuarioForm.get('ConfirmarSenha')?.errors?.['ConfirmarSenha']">
+                          {{ usuarioForm.get('ConfirmarSenha')?.errors?.['ConfirmarSenha'] }}
+                    </div>
+                </div>
+            </div>
+  
+            <div class="pt-4 text-end">
+                <button type="submit" class="btn app-btn-primary px-4" [disabled]="usuarioForm.invalid">
+                    <i class="fas fa-check me-1"></i> Salvar
+                </button>
+            </div>
+  
+        </form>
+    </div>
+  </div>

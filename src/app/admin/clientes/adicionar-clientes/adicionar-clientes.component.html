@@ -27,15 +27,37 @@
           </div>
 
           <div class="mb-3">
-              <label class="form-label">CPF</label>
-              <input type="text" class="form-control" formControlName="CPF"
-                  [ngClass]="{'is-invalid': clienteForm.get('CPF')?.invalid && clienteForm.get('CPF')?.touched}">
+                <label class="form-label">CPF</label>
+                <input type="text" class="form-control" mask="000.000.000-00" formControlName="CPF"
+                    [ngClass]="{'is-invalid': clienteForm.get('CPF')?.invalid && clienteForm.get('CPF')?.touched}">
+                <div *ngIf="clienteForm.get('CPF')?.invalid && clienteForm.get('CPF')?.touched" class="invalid-feedback">
+                    <div *ngIf="clienteForm.get('CPF')?.errors?.['required']">
+                        O CPF é obrigatório.
+                    </div>
+                    <div *ngIf="clienteForm.get('CPF')?.errors?.['pattern']">
+                        O CPF deve ter exatamente 11 dígitos.
+                    </div>
+                    <div *ngIf="clienteForm.get('CPF')?.errors?.['CPF']">
+                        {{ clienteForm.get('CPF')?.errors?.['CPF'] }}
+                    </div>
+                </div>
           </div>
 
           <div class="mb-3">
-              <label class="form-label">CNPJ</label>
-              <input type="text" class="form-control" formControlName="CNPJ"
-                  [ngClass]="{'is-invalid': clienteForm.get('CNPJ')?.invalid && clienteForm.get('CNPJ')?.touched}">
+                <label class="form-label">CNPJ</label>
+                <input type="text" class="form-control" mask="00.000.000/0000-00" formControlName="CNPJ"
+                    [ngClass]="{'is-invalid': clienteForm.get('CNPJ')?.invalid && clienteForm.get('CNPJ')?.touched}">
+                <div *ngIf="clienteForm.get('CNPJ')?.invalid && clienteForm.get('CNPJ')?.touched" class="invalid-feedback">
+                    <div *ngIf="clienteForm.get('CNPJ')?.errors?.['required']">
+                        O CNPJ é obrigatório.
+                    </div>
+                    <div *ngIf="clienteForm.get('CNPJ')?.errors?.['minlength'] || clienteForm.get('CNPJ')?.errors?.['maxlength']">
+                        O CNPJ deve ter exatamente 14 dígitos.
+                    </div>
+                    <div *ngIf="clienteForm.get('CNPJ')?.errors?.['CNPJ']">
+                        {{ clienteForm.get('CNPJ')?.errors?.['CNPJ'] }}
+                    </div>
+                </div>
           </div>
 
           <div class="mb-3">
@@ -48,14 +70,22 @@
               <label class="form-label">E-mail</label>
               <input type="email" class="form-control" formControlName="Email"
                   [ngClass]="{'is-invalid': clienteForm.get('Email')?.invalid && clienteForm.get('Email')?.touched}">
-              <div *ngIf="clienteForm.get('Email')?.invalid && clienteForm.get('Email')?.touched" class="invalid-feedback">
-                  O E-mail é obrigatório.
-              </div>
+                <div *ngIf="clienteForm.get('Email')?.invalid && clienteForm.get('Email')?.touched" class="invalid-feedback">
+                    <div *ngIf="clienteForm.get('Email')?.errors?.['required']">
+                        O Email é obrigatório.
+                    </div>
+                    <div *ngIf="clienteForm.get('Email')?.errors?.['maxlength']">
+                        O Email deve ter no máximo 50 caracteres.
+                    </div>
+                    <div *ngIf="clienteForm.get('Email')?.errors?.['Email']">
+                        {{ clienteForm.get('Email')?.errors?.['Email'] }}
+                    </div>
+                </div>
           </div>
 
           <div class="mb-3">
               <label class="form-label">Telefone</label>
-              <input type="text" class="form-control" formControlName="Telefone"
+              <input type="tel" class="form-control" mask="(00) 0 0000-0000" placeholder="Digite seu telefone" formControlName="Telefone"
                   [ngClass]="{'is-invalid': clienteForm.get('Telefone')?.invalid && clienteForm.get('Telefone')?.touched}">
           </div>
 

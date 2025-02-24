@@ -1,62 +1,111 @@
 <h1 class="app-page-title">
     {{ title }}
     <a routerLink="/produtos" class="btn btn-sm app-btn-secondary float-end px-3">
-        <i class="fas fa-angle-double-left"></i> Voltar
+      <i class="fas fa-angle-double-left"></i> Voltar
     </a>
   </h1>
   
   <div class="app-card shadow-sm p-4 border-left-decoration">
     <div class="app-card-body">
-        <form [formGroup]="pedidoForm">
-            
-            <div class="mb-3">
-                <label class="form-label">Nome do Cliente</label>
-                <select class="form-control" name="cliente" id="cliente" formControlName="cliente" 
-                [ngClass]="{'is-invalid': hasError('cliente', 'required')}">
-                    <option value="1">Cassandra</option>
-                    <option value="2">Jordan</option>
-                    <option value="3">Arnold</option>
-                    <option value="4">Larissa</option>
-                </select>
-                <!-- <input type="text" id="cliente" class="form-control" formControlName="cliente"
-                [ngClass]="{'is-invalid': hasError('cliente', 'required')}"> -->
-                <div *ngIf="hasError('cliente', 'required')" class="invalid-feedback">
-                    O cliente é obrigatório.
+      <form [formGroup]="pedidoForm" (ngSubmit)="finalizarVenda()">
+        
+        <!-- Seleção de Cliente -->
+        <div class="mb-3">
+          <label class="form-label">Cliente</label>
+          <select
+            class="form-select"
+            formControlName="cliente"
+            [ngClass]="{'is-invalid': hasError('cliente', 'required')}"
+          >
+            <option [ngValue]="null">Selecione um cliente</option>
+            <option *ngFor="let cliente of clientes" [ngValue]="cliente">
+              {{ cliente.Nome }}
+            </option>
+          </select>
+          <div *ngIf="hasError('cliente', 'required')" class="invalid-feedback">
+            O cliente é obrigatório.
+          </div>
+        </div>
+  
+        <!-- Produtos -->
+        <label class="form-label">Produtos</label>
+        <button class="btn btn-sm app-btn-primary float-end px-3" type="button" (click)="adicionarProduto()"> + </button>
+
+        <table class="table table-no-border table-action" formArrayName="Pedido_Produtos">
+        <tbody>
+            <tr *ngFor="let Pedido_Produto of Pedido_Produtos.controls; let i = index" [formGroupName]="i">
+                <td>
+                  <select class="form-control" formControlName="ID_Produto">
+                    <option [ngValue]="null">Selecione um produto</option>
+                    <option *ngFor="let produto of produtos" [ngValue]="produto.ID_Produto">
+                      {{ produto.Nome_Produto }}
+                    </option>
+                  </select>
+                  <div *ngIf="hasErrorProduto(i, 'ID_Produto', 'required')" class="invalid-feedback">
+                    Selecione um produto.
+                  </div>
+                </td>
+                
+                <td>
+                  <input class="form-control" type="number" formControlName="QTDE_Produto" placeholder="Quantidade" />
+                  <div *ngIf="hasErrorProduto(i, 'QTDE_Produto', 'required')" class="invalid-feedback">
+                    A quantidade é obrigatória.
+                  </div>
+                  <div *ngIf="hasErrorProduto(i, 'QTDE_Produto', 'min')" class="invalid-feedback">
+                    A quantidade deve ser pelo menos 1.
+                  </div>
+                </td>
+              
+                <td>
+                  <input class="form-control" type="number" formControlName="VLR_Unitario_Produto" placeholder="Valor Unitário" step="0.01" />
+                  <div *ngIf="hasErrorProduto(i, 'VLR_Unitario_Produto', 'required')" class="invalid-feedback">
+                    O valor unitário é obrigatório.
+                  </div>
+                  <div *ngIf="hasErrorProduto(i, 'VLR_Unitario_Produto', 'min')" class="invalid-feedback">
+                    O valor unitário deve ser maior que 0.
+                  </div>
+                  <div *ngIf="hasErrorProduto(i, 'VLR_Unitario_Produto', 'pattern')" class="invalid-feedback">
+                    Formato inválido (Máx. 5 dígitos antes da vírgula e 2 depois).
+                  </div>
+                </td>
+              
+                <td>
+                  <input type="number" class="form-control" formControlName="VLR_Total_Produto" 
+                  [ngClass]="{'is-invalid': hasErrorProduto(i, 'VLR_Total_Produto', 'required')}"/>
+                  <div *ngIf="hasErrorProduto(i, 'VLR_Total_Produto', 'required')" class="invalid-feedback">
+                    O total é obrigatório.
+                  </div>
+                  <div *ngIf="hasErrorProduto(i, 'VLR_Total_Produto', 'min')" class="invalid-feedback">
+                    O total não pode ser zero.
+                  </div>
+                  <!-- <div *ngIf="hasErrorProduto(i, 'VLR_Total_Produto', 'pattern')" class="invalid-feedback">
+                    Formato inválido (Máx. 5 dígitos antes da vírgula e 2 depois).
+                  </div> -->
+                  <div *ngIf="hasErrorProduto(i, 'VLR_Total_Produto', 'min') || hasErrorProduto(i, 'VLR_Total_Produto', 'pattern')" class="invalid-feedback">
+                    O preço não pode ser negativo e deve ter no máximo 2 casas decimais.
                 </div>
-            </div>
-            <!-- PRODUTOS -->
-            <label class="form-label">Produtos</label>                
-            <button class="btn btn-sm app-btn-primary float-end px-3" type="button" (click)="adicionarProduto()"> + </button>
-            <table class="table table-no-border table-action" formArrayName="produtos">
-                <tbody>
-                    <tr *ngFor="let produto of produtos.controls; let i = index" [formGroupName]="i">
-                        <td>
-                            <input class="form-control" type="text" formControlName="produto" placeholder="Produto">
-                        </td>
-                        <td>
-                            <input class="form-control" type="number" formControlName="quantidade" placeholder="Quantidade">
-                        </td>
-                        <td>
-                            <input class="form-control" type="number" formControlName="preco" placeholder="Preço"
-                            [ngClass]="{'is-invalid': hasErrorProduto(i, 'preco', 'required')}">
-                            <div *ngIf="hasErrorProduto(i, 'preco', 'required')" class="invalid-feedback">
-                                O preço é obrigatório.
-                            </div>
-                        </td>
-                        <td>
-                            <button class="btn app-btn-danger" type="button" (click)="removerProduto(i)">Remover</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+<!-- 
+                  <input class="form-control" type="number" formControlName="VLR_Total_Produto" placeholder="Preço"
+                  [ngClass]="{'is-invalid': hasErrorProduto(i, 'VLR_Total_Produto', 'required')}">
+                  <div *ngIf="hasErrorProduto(i, 'VLR_Total_Produto', 'required')" class="invalid-feedback">
+                      O preço é obrigatório.
+                  </div> -->
+                </td>
+              
+                <td>
+                  <button class="btn app-btn-danger" type="button" (click)="removerProduto(i)">Remover</button>
+                </td>
+              </tr>              
+        </tbody>
+        </table>
 
   
-            <!-- Botão de Enviar -->
-            <div class="pt-4 text-end">
-                <button type="submit" (click)="finalizarVenda()">Finalizar Venda</button>
-            </div>
+        <!-- Botão de Enviar -->
+        <div class="pt-4 text-end">
+          <button type="submit" class="btn btn-success">Finalizar Venda</button>
+        </div>
   
-        </form>
+      </form>
     </div>
   </div>
   

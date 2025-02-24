@@ -1,7 +1,7 @@
-@import "../../../styles/basic.scss";
-@import "../../../styles/dashboard.scss";
+@import "../../../../styles/basic.scss";
+@import "../../../../styles/dashboard.scss";
 
-@import "../../../styles/utils/buttons";
+@import "../../../../styles/utils/buttons";
 
 .app {
 	min-height: 100vh;
@@ -36,7 +36,7 @@
 	
 	
 	&.border-left-decoration {
-		border-left: 4px solid $theme-color-gren-blue;
+        border-left: 4px solid $theme-color-gren-blue;
 	}
 
 	.app-card-link-mask {

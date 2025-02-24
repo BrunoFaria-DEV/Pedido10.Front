@@ -30,7 +30,6 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrl: './clientes.component.scss'
 })
 export class ClientesComponent implements OnInit {
-  // clientes: ICliente[] = [];
   clientes: any[] = [];
   title: string = "Clientes";
   errorMsg = "";

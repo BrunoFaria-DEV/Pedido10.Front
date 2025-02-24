@@ -13,8 +13,8 @@ export class PermissionsService {
 
   hasRole(roles: string[]): boolean {
     let userRole = this.authUserService.obterUsuarioLogado?.Tipo_Usuario;
-    console.log("AuthUserService - Tipo de Usuario logado: ", userRole)
-    console.log("AuthUserService - Usuario Logado Atende ao Tipo: ", roles.find((element) => element == userRole) ? true : false)
+    // console.log("AuthUserService - Tipo de Usuario logado: ", userRole)
+    // console.log("AuthUserService - Usuario Logado Atende ao Tipo: ", roles.find((element) => element == userRole) ? true : false)
     return roles.find((element) => element == userRole) ? true : false; 
   }
 }

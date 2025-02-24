@@ -1,5 +1,5 @@
 export interface ICliente {
-  ID_Cliente: number;
+  ID_Cliente?: number;
   Tipo_Pessoa: boolean;  
   Nome: string;    
   CPF?: string;

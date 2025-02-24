@@ -41,6 +41,9 @@ export class EditarProdutosComponent implements OnInit {
         QTDE_Estoque: [null, [Validators.min(0)]],
       });
   
+      this.produtoForm.get('Custo_Producao')?.valueChanges.subscribe(() => this.calcularPreco());
+      this.produtoForm.get('Margem_Lucro')?.valueChanges.subscribe(() => this.calcularPreco());
+
       this._produtoService.find(this.id).subscribe(produto => {
         if (produto.produto.Success) {
           this.produtoForm.patchValue(produto.produto.Result);
@@ -49,6 +52,22 @@ export class EditarProdutosComponent implements OnInit {
     });
   }
   
+  calcularPreco(): void {
+    const custo = this.produtoForm.get('Custo_Producao')?.value;
+    const margem = this.produtoForm.get('Margem_Lucro')?.value;
+
+    if (custo !== null && margem !== null) {
+      const preco = custo * (1 + margem / 100);
+      this.produtoForm.get('Preco')?.setValue(preco.toFixed(2)); // Arredonda para 2 casas decimais
+    }
+    else if(custo !== null ) {
+      const preco = custo;
+      this.produtoForm.get('Preco')?.setValue(preco.toFixed(2)); 
+    }
+    else {
+      this.produtoForm.get('Preco')?.setValue(0); 
+    }
+  }
 
   onSubmit() {
     if (this.produtoForm.valid) {

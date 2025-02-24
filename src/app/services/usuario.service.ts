@@ -3,31 +3,34 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
+import { IUsuarioCreate } from 'app/interfaces/IUsuarioCreate';
+import { IUsuario } from 'app/interfaces/IUsuario';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiUrlUsuario = 'https://localhost:7102/api/Usuario';
+  private apiUrl = 'https://localhost:7102/api/Usuario';
 
   constructor(private httpClient: HttpClient, private router: Router) { }
 
-  GetAll(): Observable<any> {
-    return this.httpClient.get<any>(`${this.apiUrlUsuario}/all`)
-    /* esta sessão abaixo é exclusiva para garatir uma verificação
-     a mais sobre o usuário logado, mas pode funcionar sem ela */
-    .pipe(
-      tap((resposta) => {
-        if (!resposta.sucesso) {
-          console.error('Erro ao obter a lista de usuários.');
-        }
-      }),
-      catchError((error) => {
-        console.error('Erro na requisição:', error);
-        throw error;
-      })
-    );
-    //////////////////////////////////////////////////////////////
+  getAll(): Observable<any>{
+    return this.httpClient.get<any>(`${this.apiUrl}/all`);
   }
 
+  find(id: number): Observable<any> {
+    return this.httpClient.get<any>(`${this.apiUrl}/${id}`);
+  }
+
+  addUsuario(usuario: IUsuario): Observable<IUsuario> {
+    return this.httpClient.post<IUsuario>(`${this.apiUrl}`, usuario);
+  }
+
+  updateUsuario(id: number, usuario: IUsuario): Observable<IUsuario> {
+    return this.httpClient.put<IUsuario>(`${this.apiUrl}/${id}`, usuario);
+  }
+
+  deleteUsuario(id: number): Observable<IUsuario> {
+    return this.httpClient.delete<IUsuario>(`${this.apiUrl}/${id}`);
+  }
 }

@@ -1,39 +1,35 @@
 import { Component, OnInit } from '@angular/core';
-
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
-
 import { MatIconModule } from '@angular/material/icon';
-
 import { MatToolbarModule } from '@angular/material/toolbar';
-
-import { UsuarioService } from 'app/services/usuario.service';
 import { CommonModule } from '@angular/common';
 import { DeleteAlertsService } from 'app/services/alerts/delete-alerts.service';
 import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
+import { FormaPgtoService } from 'app/services/forma-pgto.service';
 
 @Component({
-  selector: 'app-usuarios',
+  selector: 'app-formas-pgto',
   standalone: true,
   imports: [
     CommonModule,
     RouterLink,
-    MatToolbarModule,
-    MatTableModule,
-    MatIconModule
+    // MatToolbarModule,
+    // MatTableModule,
+    // MatIconModule
   ],
-  templateUrl: './usuarios.component.html',
-  styleUrl: './usuarios.component.scss'
+  templateUrl: './formas-pgto.component.html',
+  styleUrl: './formas-pgto.component.scss'
 })
-export class UsuariosComponent {
-  usuarios: any[] = [];
-  title: string = "Usuarios";
+export class FormasPgtoComponent {
+  formaPgtos: any[] = [];
+  title: string = "FormaPgtos";
   errorMsg = "";
 
   constructor(
-    private usuarioService: UsuarioService, 
+    private formaPgtoService: FormaPgtoService, 
     private router: Router,
     private route: ActivatedRoute,
     private deleteAlertsService: DeleteAlertsService
@@ -43,7 +39,7 @@ export class UsuariosComponent {
     this.route.queryParams.subscribe(params => {
       if (params['sucesso'] === '1') {
         Swal.fire({
-          title: 'Usuario cadastrado!',
+          title: 'FormaPgto cadastrado!',
           text: 'O produto foi adicionado com sucesso.',
           icon: 'success',
           confirmButtonText: 'Ok'
@@ -56,14 +52,14 @@ export class UsuariosComponent {
         });
       }
     });
-    this.carregarUsuarios();
+    this.carregarFormaPgtos();
   }
 
-  carregarUsuarios() {
-    this.usuarioService.getAll().subscribe({
+  carregarFormaPgtos() {
+    this.formaPgtoService.getAll().subscribe({
       next: (data) => {
-        this.usuarios = data.result;
-        console.log(this.usuarios)
+        this.formaPgtos = data.result;
+        console.log(this.formaPgtos)
       },
       error: (err: HttpErrorResponse) => {
         let error = '';
@@ -75,21 +71,21 @@ export class UsuariosComponent {
     });
   }
 
-  editarUsuario(id: number): void {
-    this.router.navigate(['/usuarios/editar', id]);
+  editarFormaPgto(id: number): void {
+    this.router.navigate(['/formas-pgto/editar', id]);
   }
 
-  banirUsuario(id: number): void {
-    this.carregarUsuarios();
+  banirFormaPgto(id: number): void {
+    this.carregarFormaPgtos();
   }
 
-  async excluirUsuario(id: number) {
+  async excluirFormaPgto(id: number) {
     try{
-      const response = await this.deleteAlertsService.delete('Usuario');
+      const response = await this.deleteAlertsService.delete('FormaPgto');
 
       if (response) {
-        await lastValueFrom(this.usuarioService.deleteUsuario(id));
-        this.carregarUsuarios();
+        await lastValueFrom(this.formaPgtoService.deleteFormaPgto(id));
+        this.carregarFormaPgtos();
       }
 
     } catch(error) {

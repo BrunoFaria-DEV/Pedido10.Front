@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { SidebarService } from 'app/services/layout/sidebar.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faHouse, faCircleInfo, faPerson, faBox, faBagShopping } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faCircleInfo, faPerson, faBox, faBagShopping, faMoneyBill } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sidebar',
@@ -31,6 +31,7 @@ export class SidebarComponent implements OnDestroy{
   faPerson = faPerson;
   faBox = faBox;
   faBagShopping = faBagShopping;
+  faMoneyBill = faMoneyBill
 
   sidebarVisible: boolean = false;
   private sidebarSubscription!: Subscription;
@@ -48,8 +49,7 @@ export class SidebarComponent implements OnDestroy{
   }
 
   hasRole(roles: string[], item?: string): boolean {
-    console.log(`SidebarComponent - Tipos de Usuarios Permitidos em ${item}: ${roles}`)
-    // return roles.some(role => this.permissionsService.userRoles.includes(role));
+    // console.log(`SidebarComponent - Tipos de Usuarios Permitidos em ${item}: ${roles}`)
     return this.permissionsService.hasRole(roles);
   }
 

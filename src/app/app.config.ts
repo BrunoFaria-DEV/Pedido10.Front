@@ -5,11 +5,14 @@ import { withInterceptors, provideHttpClient } from '@angular/common/http';
 
 import { routes } from './app.routes';
 import { tokenInterceptor } from './services/interceptors/token.interceptor';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
+import { checkBannedInterceptor } from './services/interceptors/checkBanned.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideAnimations(),
-    provideHttpClient(withInterceptors([tokenInterceptor])),
+    provideEnvironmentNgxMask(),
+    provideHttpClient(withInterceptors([tokenInterceptor, checkBannedInterceptor])),
   ],
 };

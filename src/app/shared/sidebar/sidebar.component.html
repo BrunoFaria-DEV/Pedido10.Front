@@ -19,13 +19,12 @@
           </a>
         </li>
   
-        <li class="nav-item" *ngIf="hasRole(['admin'], 'Informações')">
+        <!-- <li class="nav-item" *ngIf="hasRole(['admin'], 'Informações')">
           <a class="nav-link" routerLink="/admin/info/1">
-            <!-- <i class="fa-solid fa-circle-info me-2"></i> -->
             <fa-icon class="me-2" [icon]="faCircleInfo"></fa-icon>
             <span class="nav-link-text">Informações</span>
           </a>
-        </li>
+        </li> -->
       </ul>
   
       <!-- Divider -->
@@ -66,6 +65,25 @@
                 <!-- <i class="fa-solid fa-paper-plane me-2"></i> -->
                 <fa-icon class="me-2" [icon]="faBox"></fa-icon>
                 <span class="nav-link-text">Produtos</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour">
+              <!-- <i class="fa-regular fa-message me-2"></i> -->
+              <fa-icon class="me-2" [icon]="faMoneyBill"></fa-icon>
+              <span class="nav-link-text">Formas De Pagamento</span>
+            </button>
+          </h2>
+          <div id="flush-collapseFour" class="accordion-collapse collapse">
+            <div class="accordion-body">
+              <a class="nav-link" routerLink="formas-pgto">
+                <!-- <i class="fa-solid fa-paper-plane me-2"></i> -->
+                <fa-icon class="me-2" [icon]="faMoneyBill"></fa-icon>
+                <span class="nav-link-text">Formas De Pagamento</span>
               </a>
             </div>
           </div>

@@ -15,6 +15,11 @@ import { EditarClientesComponent } from './admin/clientes/editar-clientes/editar
 import { PedidosComponent } from './admin/pedidos/pedidos.component';
 import { AdicionarPedidosComponent } from './admin/pedidos/adicionar-pedidos/adicionar-pedidos.component';
 import { EditarPedidosComponent } from './admin/pedidos/editar-pedidos/editar-pedidos.component';
+import { AdicionarUsuariosComponent } from './admin/usuarios/adicionar-usuarios/adicionar-usuarios.component';
+import { EditarUsuariosComponent } from './admin/usuarios/editar-usuarios/editar-usuarios.component';
+import { FormasPgtoComponent } from './admin/formas-pgto/formas-pgto.component';
+import { AdicionarFormasPgtoComponent } from './admin/formas-pgto/adicionar-formas-pgto/adicionar-formas-pgto.component';
+import { EditarFormasPgtoComponent } from './admin/formas-pgto/editar-formas-pgto/editar-formas-pgto.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [usuarioNaoAutenticadoGuard] },
@@ -31,6 +36,11 @@ export const routes: Routes = [
             { path: 'pedidos/novo', component: AdicionarPedidosComponent},
             { path: 'pedidos/editar/:id', component: EditarPedidosComponent},
             { path: 'usuarios', component: UsuariosComponent},
+            { path: 'usuarios/novo', component: AdicionarUsuariosComponent},
+            { path: 'usuarios/editar/:id', component: EditarUsuariosComponent},
+            { path: 'formas-pgto', component: FormasPgtoComponent},
+            { path: 'formas-pgto/novo', component: AdicionarFormasPgtoComponent},
+            { path: 'formas-pgto/editar/:id', component: EditarFormasPgtoComponent},
         ],
     },
     // { path: '**', component: PageNotFoundComponent },

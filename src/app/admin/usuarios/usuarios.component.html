@@ -1,20 +1,55 @@
-<div>
-	<h2>Lista de Usuários</h2>
+<h1 class="app-page-title">
+    {{ title }}
+    <a routerLink="/usuarios/novo" class="btn btn-sm app-btn-secondary float-end px-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Nova Empresa">Novo</a>
+  </h1>
 
-	<!-- Mostra mensagem de carregamento -->
-	<p *ngIf="loading">Carregando usuários...</p>
-
-	<!-- Exibe mensagem se a lista estiver vazia -->
-	<p *ngIf="!loading && usuarios.length === 0">Nenhum usuário encontrado.</p>
-
-	<!-- Renderiza a lista de usuários -->
-	<ul *ngIf="!loading && usuarios.length > 0">
-		<li *ngFor="let usuario of usuarios">
-			<strong>Nome:</strong> {{ usuario.Nome }}<br />
-			<strong>Email:</strong> {{ usuario.Email }}
-		</li>
-	</ul>
-
-	<!-- Mensagem de erro -->
-	<p *ngIf="error" style="color: red;">Erro ao carregar usuários: {{ error }}</p>
-</div>
+  <div class="app-card app-card-orders-table border-left-decoration">
+    <div class="app-card-body">
+      <div class="table-responsive">
+        <table class="table app-table-hover table-custom table-action">
+          <thead>
+            <tr>
+              <!-- <th scope="col" class="cell">#</th> -->
+              <th scope="col" class="cell"> Nome do Usuário</th>
+              <th scope="col" class="cell"> Email</th>
+              <th scope="col" class="cell"> Plano de Usuário</th>
+              <th scope="col" class="cell"> Status do Usuário</th>
+              <th scope="col" class="cell"> Tipo_Usuario</th>
+              <th colspan="2" class="cell"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (!errorMsg) {
+              <tr *ngFor="let usuario of usuarios">
+                <!-- <td scope="row" class="cell">{{ usuario.ID_Cliente }}</td> -->
+                <td class="cell fw-medium">{{ usuario.Nome }}</td>
+				<td class="cell">
+				  <p class="text-xs text-secondary mb-0">{{ usuario.Email }}</p>
+				</td>
+                <td class="cell">
+                  <p class="text-xs text-secondary mb-0">{{ usuario.Plano_Usuario }}</p>
+                </td>
+                <td class="cell">
+                  <p class="text-xs text-secondary mb-0">{{ usuario.Status }}</p>
+                </td>
+                <td class="cell">
+                  <p class="text-xs text-secondary mb-0">{{ usuario.Tipo_Usuario }}</p>
+                </td>
+                <td class="cell cell-custom">
+                  <a [routerLink]="['/usuarios/editar', usuario.ID_Usuario]" class="btn app-btn-primary">
+                    Editar
+                  </a>
+                </td>
+                <td class="cell cell-custom">
+                  <button type="button" (click)="excluirUsuario(usuario.ID_Usuario)" class="btn app-btn-danger">
+                    Deletar
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+          <span *ngIf="errorMsg">{{ errorMsg }}</span>
+        </table>
+      </div>
+    </div>
+  </div>

@@ -6,85 +6,114 @@
 </h1>
 
 <div class="app-card shadow-sm p-4 border-left-decoration">
-  <div class="app-card-body">
-      <!-- Formulário com Reactive Forms -->
-      <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
-          
-          <div class="mb-3">
-              <label class="form-label">Tipo de Pessoa</label>
-              <input type="text" class="form-control" formControlName="Tipo_Pessoa"
-                  [ngClass]="{'is-invalid': clienteForm.get('Tipo_Pessoa')?.invalid && clienteForm.get('Tipo_Pessoa')?.touched}">
-              <div *ngIf="clienteForm.get('Tipo_Pessoa')?.invalid && clienteForm.get('Tipo_Pessoa')?.touched" class="invalid-feedback">
-                  O Tipo de Pessoa é obrigatório.
-              </div>
-          </div>
-
-          <div class="mb-3">
-              <label class="form-label">Nome</label>
-              <input type="text" class="form-control" formControlName="Nome"
-                  [ngClass]="{'is-invalid': clienteForm.get('Nome')?.invalid && clienteForm.get('Nome')?.touched}">
-              <div *ngIf="clienteForm.get('Nome')?.invalid && clienteForm.get('Nome')?.touched" class="invalid-feedback">
-                  O Nome é obrigatório.
-              </div>
-          </div>
-
-          <div class="mb-3">
-              <label class="form-label">CPF</label>
-              <input type="text" class="form-control" formControlName="CPF"
-                  [ngClass]="{'is-invalid': clienteForm.get('CPF')?.invalid && clienteForm.get('CPF')?.touched}">
-          </div>
-
-          <div class="mb-3">
-              <label class="form-label">CNPJ</label>
-              <input type="text" class="form-control" formControlName="CNPJ"
-                  [ngClass]="{'is-invalid': clienteForm.get('CNPJ')?.invalid && clienteForm.get('CNPJ')?.touched}">
-          </div>
-
-          <div class="mb-3">
-              <label class="form-label">Data de Nascimento</label>
-              <input type="date" class="form-control" formControlName="Nascimento"
-                  [ngClass]="{'is-invalid': clienteForm.get('Nascimento')?.invalid && clienteForm.get('Nascimento')?.touched}">
-          </div>
-
-          <div class="mb-3">
-              <label class="form-label">E-mail</label>
-              <input type="email" class="form-control" formControlName="Email"
-                  [ngClass]="{'is-invalid': clienteForm.get('Email')?.invalid && clienteForm.get('Email')?.touched}">
-              <div *ngIf="clienteForm.get('Email')?.invalid && clienteForm.get('Email')?.touched" class="invalid-feedback">
-                  O E-mail é obrigatório.
-              </div>
-          </div>
-
-          <div class="mb-3">
-              <label class="form-label">Telefone</label>
-              <input type="text" class="form-control" formControlName="Telefone"
-                  [ngClass]="{'is-invalid': clienteForm.get('Telefone')?.invalid && clienteForm.get('Telefone')?.touched}">
-          </div>
-
-          <div class="mb-3">
-              <label class="form-label">Endereço</label>
-              <input type="text" class="form-control" formControlName="Endereco"
-                  [ngClass]="{'is-invalid': clienteForm.get('Endereco')?.invalid && clienteForm.get('Endereco')?.touched}">
-          </div>
-
-          <div class="mb-3">
-              <label class="form-label">Localizador</label>
-              <input type="text" class="form-control" formControlName="Localizador"
-                  [ngClass]="{'is-invalid': clienteForm.get('Localizador')?.invalid && clienteForm.get('Localizador')?.touched}">
-          </div>
-
-          <div class="mb-3">
-              <label class="form-label">Cidade</label>
-              <input type="text" class="form-control" formControlName="ID_Cidade"
-                  [ngClass]="{'is-invalid': clienteForm.get('ID_Cidade')?.invalid && clienteForm.get('ID_Cidade')?.touched}">
-          </div>
-
-          <div class="pt-4 text-end">
-              <button type="submit" class="btn app-btn-primary px-4" [disabled]="clienteForm.invalid">
-                  <i class="fas fa-check me-1"></i> Salvar
-              </button>
-          </div>
-
-      </form>
+    <div class="app-card-body">
+        <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
+            
+            <div class="mb-3">
+              <label class="form-label">Tipo</label>
+              <select class="form-select" aria-label="Default select example" formControlName="Tipo_Pessoa">
+                  <option selected [ngValue]="true">Pessoa Fisica</option>
+                  <option [ngValue]="false">Pessoa Juridica</option>
+                </select>
+            </div>
+  
+            <div class="mb-3">
+                <label class="form-label">Nome</label>
+                <input type="text" class="form-control" formControlName="Nome"
+                    [ngClass]="{'is-invalid': clienteForm.get('Nome')?.invalid && clienteForm.get('Nome')?.touched}">
+                <div *ngIf="clienteForm.get('Nome')?.invalid && clienteForm.get('Nome')?.touched" class="invalid-feedback">
+                    O Nome é obrigatório.
+                </div>
+            </div>
+  
+            <div class="mb-3">
+                  <label class="form-label">CPF</label>
+                  <input type="text" class="form-control" mask="000.000.000-00" formControlName="CPF"
+                      [ngClass]="{'is-invalid': clienteForm.get('CPF')?.invalid && clienteForm.get('CPF')?.touched}">
+                  <div *ngIf="clienteForm.get('CPF')?.invalid && clienteForm.get('CPF')?.touched" class="invalid-feedback">
+                      <div *ngIf="clienteForm.get('CPF')?.errors?.['required']">
+                          O CPF é obrigatório.
+                      </div>
+                      <div *ngIf="clienteForm.get('CPF')?.errors?.['pattern']">
+                          O CPF deve ter exatamente 11 dígitos.
+                      </div>
+                      <div *ngIf="clienteForm.get('CPF')?.errors?.['CPF']">
+                          {{ clienteForm.get('CPF')?.errors?.['CPF'] }}
+                      </div>
+                  </div>
+            </div>
+  
+            <div class="mb-3">
+                  <label class="form-label">CNPJ</label>
+                  <input type="text" class="form-control" mask="00.000.000/0000-00" formControlName="CNPJ"
+                      [ngClass]="{'is-invalid': clienteForm.get('CNPJ')?.invalid && clienteForm.get('CNPJ')?.touched}">
+                  <div *ngIf="clienteForm.get('CNPJ')?.invalid && clienteForm.get('CNPJ')?.touched" class="invalid-feedback">
+                      <div *ngIf="clienteForm.get('CNPJ')?.errors?.['required']">
+                          O CNPJ é obrigatório.
+                      </div>
+                      <div *ngIf="clienteForm.get('CNPJ')?.errors?.['minlength'] || clienteForm.get('CNPJ')?.errors?.['maxlength']">
+                          O CNPJ deve ter exatamente 14 dígitos.
+                      </div>
+                      <div *ngIf="clienteForm.get('CNPJ')?.errors?.['CNPJ']">
+                          {{ clienteForm.get('CNPJ')?.errors?.['CNPJ'] }}
+                      </div>
+                  </div>
+            </div>
+  
+            <div class="mb-3">
+                <label class="form-label">Data de Nascimento</label>
+                <input type="date" class="form-control" formControlName="Nascimento"
+                    [ngClass]="{'is-invalid': clienteForm.get('Nascimento')?.invalid && clienteForm.get('Nascimento')?.touched}">
+            </div>
+  
+            <div class="mb-3">
+                <label class="form-label">E-mail</label>
+                <input type="email" class="form-control" formControlName="Email"
+                    [ngClass]="{'is-invalid': clienteForm.get('Email')?.invalid && clienteForm.get('Email')?.touched}">
+                  <div *ngIf="clienteForm.get('Email')?.invalid && clienteForm.get('Email')?.touched" class="invalid-feedback">
+                      <div *ngIf="clienteForm.get('Email')?.errors?.['required']">
+                          O Email é obrigatório.
+                      </div>
+                      <div *ngIf="clienteForm.get('Email')?.errors?.['maxlength']">
+                          O Email deve ter no máximo 50 caracteres.
+                      </div>
+                      <div *ngIf="clienteForm.get('Email')?.errors?.['Email']">
+                          {{ clienteForm.get('Email')?.errors?.['Email'] }}
+                      </div>
+                  </div>
+            </div>
+  
+            <div class="mb-3">
+                <label class="form-label">Telefone</label>
+                <input type="tel" class="form-control" mask="(00) 0 0000-0000" placeholder="Digite seu telefone" formControlName="Telefone"
+                    [ngClass]="{'is-invalid': clienteForm.get('Telefone')?.invalid && clienteForm.get('Telefone')?.touched}">
+            </div>
+  
+            <div class="mb-3">
+                <label class="form-label">Endereço</label>
+                <input type="text" class="form-control" formControlName="Endereco"
+                    [ngClass]="{'is-invalid': clienteForm.get('Endereco')?.invalid && clienteForm.get('Endereco')?.touched}">
+            </div>
+  
+            <div class="mb-3">
+                <label class="form-label">Localizador</label>
+                <input type="text" class="form-control" formControlName="Localizador"
+                    [ngClass]="{'is-invalid': clienteForm.get('Localizador')?.invalid && clienteForm.get('Localizador')?.touched}">
+            </div>
+  
+            <div class="mb-3">
+                  <label class="form-label">Cidade</label>
+                  <select class="form-select" aria-label="Default" formControlName="ID_Cidade">
+                      <option *ngFor="let cidade of cidades" [ngValue]="cidade.ID_Cidade">{{cidade.Nome_Cidade}}</option>
+                  </select>
+            </div>
+  
+            <div class="pt-4 text-end">
+                <button type="submit" class="btn app-btn-primary px-4" [disabled]="clienteForm.invalid">
+                    <i class="fas fa-check me-1"></i> Salvar
+                </button>
+            </div>
+  
+        </form>
+    </div>
   </div>
-</div>

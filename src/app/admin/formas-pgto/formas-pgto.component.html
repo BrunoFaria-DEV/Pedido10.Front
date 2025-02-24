@@ -1,0 +1,39 @@
+<h1 class="app-page-title">
+    {{ title }}
+    <a routerLink="/formas-pgto/novo" class="btn btn-sm app-btn-secondary float-end px-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Nova Empresa">Novo</a>
+  </h1>
+
+  <div class="app-card app-card-orders-table border-left-decoration">
+    <div class="app-card-body">
+      <div class="table-responsive">
+        <table class="table app-table-hover table-custom table-action">
+          <thead>
+            <tr>
+              <!-- <th scope="col" class="cell">#</th> -->
+              <th scope="col" class="cell"> Forma de Pagamento</th>
+              <th colspan="2" class="cell"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (!errorMsg) {
+              <tr *ngFor="let formaPgto of formaPgtos">
+                <!-- <td scope="row" class="cell">{{ formaPgto.ID_Cliente }}</td> -->
+                <td class="cell fw-medium">{{ formaPgto.Desc_Forma_PGTO }}</td>
+                <td class="cell cell-custom">
+                  <a [routerLink]="['/formas-pgto/editar', formaPgto.ID_Forma_PGTO]" class="btn app-btn-primary">
+                    Editar
+                  </a>
+                </td>
+                <td class="cell cell-custom">
+                  <button type="button" (click)="excluirFormaPgto(formaPgto.ID_Forma_PGTO)" class="btn app-btn-danger">
+                    Deletar
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+          <span *ngIf="errorMsg">{{ errorMsg }}</span>
+        </table>
+      </div>
+    </div>
+  </div>
