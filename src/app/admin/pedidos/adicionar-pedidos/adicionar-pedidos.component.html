@@ -1,13 +1,13 @@
 <h1 class="app-page-title">
     {{ title }}
-    <a routerLink="/produtos" class="btn btn-sm app-btn-secondary float-end px-3">
+    <a routerLink="/pedidos" class="btn btn-sm app-btn-secondary float-end px-3">
       <i class="fas fa-angle-double-left"></i> Voltar
     </a>
   </h1>
   
   <div class="app-card shadow-sm p-4 border-left-decoration">
     <div class="app-card-body">
-      <form [formGroup]="pedidoForm" (ngSubmit)="finalizarVenda()">
+      <form [formGroup]="pedidoForm" (ngSubmit)="onSubmit()">
         
         <!-- Seleção de Cliente -->
         <div class="mb-3">
@@ -16,7 +16,7 @@
             [ngClass]="{'is-invalid': pedidoForm.get('ID_Cliente')?.invalid && 
             pedidoForm.get('ID_Cliente')?.touched}">
             <option [ngValue]="null">Selecione um cliente</option>
-            <option *ngFor="let cliente of clientes" [ngValue]="cliente">
+            <option *ngFor="let cliente of clientes" [ngValue]="cliente.ID_Cliente">
               {{ cliente.Nome }}
             </option>
           </select>
@@ -36,7 +36,6 @@
                 <td>
                   <select class="form-control" formControlName="ID_Produto" placeholder="Produto" (change)="getProductInformations(i)"
                   [ngClass]="{'is-invalid': Pedido_Produto.get('ID_Produto')?.invalid}">
-                    <option [ngValue]="null">- Selecione -</option>
                     <option *ngFor="let produto of produtos" [ngValue]="produto.ID_Produto">
                       {{ produto.Nome_Produto }}
                     </option>
@@ -234,8 +233,6 @@
                   </div>
                 </td>
 
-
-
                 <td>
                   <button class="btn app-btn-danger" type="button" (click)="removerParcela(i)">Remover</button>
                 </td>
@@ -243,9 +240,34 @@
         </tbody>
         </table>
 
+        <div class="mb-3">
+          <label class="form-label">Previsão de Entrega <small class="text-danger">(Campo Obrigatório)</small></label>
+          <input type="date" class="form-control" formControlName="DT_Entrega" placeholder="Entrega Programada"
+                [ngClass]="{'is-invalid': pedidoForm.get('DT_Entrega')?.invalid && pedidoForm.get('DT_Entrega')?.touched}">
+          <div *ngIf="pedidoForm.get('ID_Cliente')?.invalid && pedidoForm.get('ID_Cliente')?.touched" class="invalid-feedback">
+            O data de entrega prevista é obrigatório.
+          </div>
+        </div>
+
+        <select class="form-control" formControlName="Status_Entrega_Pedido"
+                [ngClass]="{'is-invalid': pedidoForm.get('Status_Entrega_Pedido')?.invalid}">
+          <option *ngFor="let statusEntregaPedido of statusEntregaPedidos" [ngValue]="statusEntregaPedido.status">
+            {{ statusEntregaPedido.description }}
+          </option>
+        </select>
+        <!-- Validação -->
+        <div *ngIf="pedidoForm.get('Status_Entrega_Pedido')?.invalid" class="invalid-feedback">
+          <div *ngIf="pedidoForm.get('Status_Entrega_Pedido')?.errors?.['required']">
+            Selecione um status de entrega.
+          </div>
+          <div *ngIf="pedidoForm.get('Status_Entrega_Pedido')?.errors?.['Status_Entrega_Pedido']">
+            {{ pedidoForm.get('Status_Entrega_Pedido')?.errors?.['Status_Entrega_Pedido'] }}
+          </div>
+        </div>
+
         <div class="form-group">
           <label for="vlrTotalPedido">Valor Total do Pedido</label>
-          <input type="text" id="vlrTotalPedido" class="form-control" [value]="vlrTotalPedido | currency:'BRL'" readonly>
+          <input type="number" id="vlrTotalPedido" class="form-control" [value]="vlrTotalPedido" readonly>
         </div>
 
         <!-- Botão de Enviar -->

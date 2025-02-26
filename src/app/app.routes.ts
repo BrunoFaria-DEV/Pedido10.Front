@@ -34,7 +34,7 @@ export const routes: Routes = [
             { path: 'produtos/editar/:id', component: EditarProdutosComponent},
             { path: 'pedidos', component: PedidosComponent},
             { path: 'pedidos/novo', component: AdicionarPedidosComponent},
-            { path: 'pedidos/editar/:id', component: EditarPedidosComponent},
+            // { path: 'pedidos/editar/:id', component: EditarPedidosComponent},
             { path: 'usuarios', component: UsuariosComponent},
             { path: 'usuarios/novo', component: AdicionarUsuariosComponent},
             { path: 'usuarios/editar/:id', component: EditarUsuariosComponent},

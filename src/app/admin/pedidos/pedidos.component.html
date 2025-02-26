@@ -1,1 +1,52 @@
-<p>pedidos works!</p>
+<h1 class="app-page-title">
+    {{ title }}
+    <a routerLink="/pedidos/novo" class="btn btn-sm app-btn-secondary float-end px-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Novo Pedido">
+        Novo Pedido
+    </a>
+</h1>
+
+<div class="app-card app-card-orders-table border-left-decoration">
+    <div class="app-card-body">
+        <div class="table-responsive">
+            <table class="table app-table-hover table-custom table-action">
+                <thead>
+                    <tr>
+                        <th scope="col" class="cell">Código</th>
+                        <th scope="col" class="cell">Cliente</th>
+                        <th scope="col" class="cell">Valor Total</th>
+                        <th scope="col" class="cell">Status</th>
+                        <th scope="col" class="cell">Data do Pedido</th>
+                        <th scope="col" class="cell">Data de Entrega</th>
+                        <th scope="col" class="cell">Hora da Entrega</th>
+                        <th colspan="2" class="cell"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let pedido of pedidos">
+                        <td class="cell fw-medium">{{ pedido.ID_Pedido }}</td>
+                        <td class="cell">{{ pedido.ID_Cliente }}</td>
+                        <td class="cell">{{ pedido.VLR_Total_Pedido | currency:'BRL' }}</td>
+                        <td class="cell">
+                            <span [ngClass]="{'badge bg-success': pedido.Status_Entrega_Pedido === 'E', 'badge bg-warning': pedido.Status_Entrega_Pedido === 'P'}">
+                                {{ pedido.Status_Entrega_Pedido === 'E' ? 'Entregue' : 'Pendente' }}
+                            </span>
+                        </td>
+                        <td class="cell">{{ pedido.DT_Pedido | date:'dd/MM/yyyy' }}</td>
+                        <td class="cell">{{ pedido.DT_Entrega ? (pedido.DT_Entrega | date:'dd/MM/yyyy') : '-' }}</td>
+                        <td class="cell">{{ pedido.Hora_Entrega ? (pedido.Hora_Entrega | date:'HH:mm') : '-' }}</td>
+                        <td class="cell cell-custom">
+                            <a [routerLink]="['/pedidos/editar', pedido.ID_Pedido]" class="btn app-btn-primary">
+                                Editar
+                            </a>
+                        </td>
+                        <td class="cell cell-custom">
+                            <button type="button" (click)="excluirPedido(pedido.ID_Pedido)" class="btn app-btn-danger">
+                                Deletar
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

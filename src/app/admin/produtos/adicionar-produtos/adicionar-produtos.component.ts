@@ -60,28 +60,41 @@ export class AdicionarProdutosComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.produtoForm.valid) {
-      var produtoForm = this.produtoForm.getRawValue() as IProduto;
-      
-      this._produtoService.addProduto(produtoForm).subscribe({
-        next: (response) => {
-          this._router.navigate(['/produtos'], { queryParams: { sucesso: '1' } });
-        },
-        error: (error) => {
-          if (error.status === 400) {
-            console.log('Erros de validação:');
-            Object.keys(error.error.errors).forEach((campo) => {
-              error.error.errors[campo].forEach((mensagem: string) => {
-                console.log(`Campo: ${campo} - Erro: ${mensagem}`);
-              });
-            });
+      if (this.produtoForm.valid) {
+        const produto: IProduto = this.produtoForm.getRawValue() as IProduto;
+
+        this._produtoService.addProduto(produto).subscribe({
+          next: (response) => {
+            console.log("Produto adicionado com sucesso:", response);
+            this._router.navigate(['/produtos'], { queryParams: { sucesso: '1' } });
+          },
+          error: (error) => {
+            if (error.status === 400) {
+              const errors = error.error.errors;
+              if (errors) {
+                for (const field in errors) {
+                  if (this.produtoForm.get(field)) {
+                    this.produtoForm.get(field)?.setErrors({ [field]: errors[field] });
+                    this.produtoForm.get(field)?.markAsTouched();
+                  }
+                }
+              }
+            }
+            else if (error.error && error.error.message) {
+              console.error("Mensagem de erro do backend:", error.error.message);
+              alert(error.error.message);
+            } else {
+              console.error("Erro desconhecido:", error);
+              alert("Ocorreu um erro ao adicionar o produto. Tente novamente mais tarde.");
+            }
           }
-        }
-      });
-    } else {
-      this.produtoForm.markAllAsTouched();
+        });
+      } else {
+        console.log('Formulário Inválido', this.produtoForm.errors);
+        this.produtoForm.markAllAsTouched();
+      }
+      console.log(this.produtoForm.value)
     }
-  }
 
   hasError(campo: string, tipoErro: string) {
     return this.produtoForm.get(campo)?.hasError(tipoErro) && this.produtoForm.get(campo)?.touched;
