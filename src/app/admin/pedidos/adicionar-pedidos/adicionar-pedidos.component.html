@@ -36,6 +36,7 @@
                 <td>
                   <select class="form-control" formControlName="ID_Produto" placeholder="Produto" (change)="getProductInformations(i)"
                   [ngClass]="{'is-invalid': Pedido_Produto.get('ID_Produto')?.invalid}">
+                    <option [ngValue]="null">- Selecione -</option>
                     <option *ngFor="let produto of produtos" [ngValue]="produto.ID_Produto">
                       {{ produto.Nome_Produto }}
                     </option>
@@ -120,7 +121,8 @@
           <label class="form-label">Quantidade de Parcelas</label>
           <!-- <input type="number" class="form-control" [(ngModel)]="quantidadeParcelas" min="1"> -->
           <input type="number" class="form-control" [value]="quantidadeParcelas" (input)="atualizarQuantidadeParcelas($event)" min="1">
-          <button type="button" class="btn btn-primary mt-2" (click)="adicionarParcelas()">Gerar Parcelas</button>
+          <button type="button" class="btn btn-primary mt-2 me-2" (click)="adicionarParcelas()">Gerar Parcelas</button>
+          <button type="button" class="btn btn-danger mt-2" (click)="this.Parcelas.clear()">Limpar Parcelas</button>
         </div>
 
         <table class="table table-no-border table-action" formArrayName="Parcelas">
@@ -233,9 +235,9 @@
                   </div>
                 </td>
 
-                <td>
+                <!-- <td>
                   <button class="btn app-btn-danger" type="button" (click)="removerParcela(i)">Remover</button>
-                </td>
+                </td> -->
               </tr>              
         </tbody>
         </table>

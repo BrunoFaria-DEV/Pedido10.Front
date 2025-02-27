@@ -27,13 +27,13 @@
               <p class="text-xs text-secondary mb-0">{{ produto.Descricao }}</p>
             </td>
             <td class="cell">
-              <p class="text-xs text-secondary mb-0">{{ produto.Custo_Producao | number:'1.2-2' }}</p>
+              <p class="text-xs text-secondary mb-0">R$ {{ produto.Custo_Producao | number:'1.2-2' }}</p>
             </td>
             <td class="cell">
-              <p class="text-xs text-secondary mb-0">{{ produto.Margem_Lucro | number:'1.2-2' }}</p>
+              <p class="text-xs text-secondary mb-0">% {{ produto.Margem_Lucro | number:'1.2-2' }}</p>
             </td>
             <td class="cell">
-              <p class="text-xs text-secondary mb-0">{{ produto.Preco | number:'1.2-2' }}</p>
+              <p class="text-xs text-secondary mb-0">R$ {{ produto.Preco | number:'1.2-2' }}</p>
             </td>
             <td class="cell">
               <p class="text-xs text-secondary mb-0">{{ produto.QTDE_Estoque | number:'1.2-2' }}</p>

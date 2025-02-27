@@ -12,6 +12,8 @@ import Swal from 'sweetalert2';
 import { DeleteAlertsService } from 'app/services/alerts/delete-alerts.service';
 import { lastValueFrom } from 'rxjs';
 import { PedidoService } from 'app/services/pedido.service';
+import { ClienteService } from 'app/services/cliente.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-pedidos',
@@ -28,12 +30,14 @@ import { PedidoService } from 'app/services/pedido.service';
 })
 export class PedidosComponent implements OnInit {
   pedidos: any[] = [];
+  clientes: any[] = [];
   title: string = "Pedidos";
 
   constructor(
     private pedidoService: PedidoService, 
     private router: Router,
     private route: ActivatedRoute,
+    private clienteService: ClienteService, 
     private deleteAlertsService: DeleteAlertsService
   ) {}
 
@@ -56,6 +60,7 @@ export class PedidosComponent implements OnInit {
       }
     });
     this.carregarPedidos();
+    this.carregarClientes();
   }
 
   carregarPedidos(): void {
@@ -64,6 +69,23 @@ export class PedidosComponent implements OnInit {
       this.pedidos = data.result;
       console.log(data.result)
     }});
+  }
+
+  carregarClientes() {
+    this.clienteService.getAll().subscribe({
+      next: (data) => this.clientes = data.result,
+      error: (err: HttpErrorResponse) => {
+        let error = '';
+        if (err.status === 400) {
+          error = 'Clientes não encontrados';
+        }
+      }
+    });
+  }
+
+  getClienteNome(idCliente: number): string {
+    const cliente = this.clientes.find(cliente => cliente.ID_Cliente === idCliente);
+    return cliente ? cliente.Nome : 'Cliente não encontrado'; // Ou qualquer valor padrão
   }
 
   editarPedido(id: number): void {

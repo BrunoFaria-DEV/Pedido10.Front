@@ -67,7 +67,7 @@ export class ClientesComponent implements OnInit {
       error: (err: HttpErrorResponse) => {
         let error = '';
         if (err.status === 400) {
-          error = 'Clietnes não encontrados';
+          error = 'Clientes não encontrados';
         }
         this.errorMsg = error
       }

@@ -27,7 +27,7 @@
               <tr *ngFor="let cliente of clientes">
                 <!-- <td scope="row" class="cell">{{ cliente.ID_Cliente }}</td> -->
                 <td class="cell">
-                  <p class="text-xs text-secondary mb-0">{{ cliente.Tipo_Pessoa }}</p>
+                  <p class="text-xs text-secondary mb-0">{{ !cliente.Tipo_Pessoa ? "Pessoa Jurídica" : "Pessoa Física" }}</p>
                 </td>
                 <td class="cell fw-medium">{{ cliente.Nome }}</td>
                 <td class="cell">

@@ -22,9 +22,9 @@ export class PedidoService {
     return this.http.post<any>(`${this.apiUrl}`, pedido);
   }
 
-//   updateProduto(id: number, produto: Produto): Observable<any> {
-//     return this.http.put<any>(`${this.apiUrl}/${id}`, produto);
-//   }
+  updatePedido(id: number, pedido: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, pedido);
+  }
 
   deletePedido(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);

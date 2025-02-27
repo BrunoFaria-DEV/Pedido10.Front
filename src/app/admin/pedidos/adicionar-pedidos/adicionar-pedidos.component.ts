@@ -2,19 +2,21 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ClienteService } from 'app/services/cliente.service';
 import { FormaPgtoService } from 'app/services/forma-pgto.service';
 import { PedidoService } from 'app/services/pedido.service';
 import { ProductService } from 'app/services/produto.service';
+import { minLengthArray } from 'app/services/validators/min-length-array';
 
 @Component({
   selector: 'app-pedidos',
   standalone: true,
   imports: [
-    CommonModule,  // For NgIf, NgFor, etc.
-    ReactiveFormsModule, // For reactive forms
-    FormsModule       // For template driven forms (ngModel)
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    RouterLink
   ],
   templateUrl: './adicionar-pedidos.component.html',
   styleUrl: './adicionar-pedidos.component.scss'
@@ -51,8 +53,8 @@ export class AdicionarPedidosComponent implements OnInit {
       VLR_Total_Pedido: [null, [Validators.min(0), Validators.pattern(/^\d{1,7}(\.\d{1,2})?$/)]],
       DT_Entrega: [Date.now, [Validators.required]],
       Status_Entrega_Pedido: [this.statusEntregaPedidos[0].status, [Validators.required]],
-      Pedido_Produtos: this.formBuilder.array([]),
-      Parcelas: this.formBuilder.array([]),
+      Pedido_Produtos: this.formBuilder.array([], minLengthArray(1)),
+      Parcelas: this.formBuilder.array([], minLengthArray(1)),
     });
 
     this._clienteService.getAll().subscribe({
@@ -115,11 +117,17 @@ export class AdicionarPedidosComponent implements OnInit {
 
   adicionarProduto(): void {
     const produtoGroup = this.formBuilder.group({
-      ID_Produto: [this.produtos[0]?.ID_Produto, Validators.required],
+      ID_Produto: [null, Validators.required],
       QTDE_Produto: [1, [Validators.required, Validators.min(1)]],
       VLR_Unitario_Produto: [null, [Validators.required, Validators.min(0), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]],
       VLR_Total_Produto: [null, [Validators.required, Validators.min(0), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]],
     });
+
+    // this.Pedido_Produtos.push(produtoGroup);
+
+    // const index = this.Pedido_Produtos.length - 1;
+
+    // this.getProductInformations(index);
 
     // Atualiza o valor total automaticamente ao modificar quantidade ou valor unitário
     produtoGroup.get('QTDE_Produto')?.valueChanges.subscribe(() => this.calcularTotalProduto(produtoGroup));
@@ -144,7 +152,7 @@ export class AdicionarPedidosComponent implements OnInit {
     for (let i = 1; i <= this.quantidadeParcelas; i++) {
       const parcelaGroup = this.formBuilder.group({
         Numero_Parcela: [i, Validators.required],
-        DT_Vencimento: [this.getProximaData(i), Validators.required], // Define data de vencimento
+        DT_Vencimento: [this.getProximaData(i), Validators.required],
         ID_Forma_PGTO: [null, Validators.required],
         Valor_Parcela: [parseFloat(valorParcela.toFixed(2)), [Validators.required, Validators.min(0), Validators.pattern(/^\d{1,5}(\.\d{1,2})?$/)]],
         Status_Parcela: [this.parcelas[0].status, Validators.required],
@@ -208,7 +216,7 @@ export class AdicionarPedidosComponent implements OnInit {
 
     if (statusParcela === 'P') {
       this.marcarParcelaComoPaga(index);
-    } else if (statusParcela === 'D') { // Limpa os campos se o status for 'D'
+    } else if (statusParcela === 'D') {
       this.limparCamposParcela(index);
     }
   }
@@ -233,24 +241,10 @@ export class AdicionarPedidosComponent implements OnInit {
   limparCamposParcela(index: number): void {
     const parcelaFormGroup = this.Parcelas.at(index) as FormGroup;
 
-    parcelaFormGroup.get('Valor_Pago_Parcela')?.setValue(null); // Limpa o valor pago
-    parcelaFormGroup.get('Data_Pagamento')?.setValue(null); // Limpa a data de pagamento
-    //parcelaFormGroup.get('Status_Parcela')?.setValue('D'); // Não precisa limpar o status, pois já está 'D'
+    parcelaFormGroup.get('Valor_Pago_Parcela')?.setValue(null);
+    parcelaFormGroup.get('Data_Pagamento')?.setValue(null);
+    //parcelaFormGroup.get('Status_Parcela')?.setValue('D');
   }
-  
-
-  // finalizarVenda(): void {
-  //   const valorTotalPedido = this.calcularTotalPedido();
-    
-  //   // Garante que o valor é um número antes parseFloat(de chamar to)Fixed
-  //   if (!isNaN(valorTotalPedido)) {
-  //     this.pedidoForm.get('VLR_Total_Pedido')?.setValue(parseFloat(valorTotalPedido.toFixed(2)));
-  //   } else {
-  //     console.error("Erro: valorTotalPedido não é um número válido", valorTotalPedido);
-  //   }
-  
-  //   console.log(this.pedidoForm.value);
-  // }
 
   onSubmit() {
     const valorTotalPedido = this.calcularTotalPedido();

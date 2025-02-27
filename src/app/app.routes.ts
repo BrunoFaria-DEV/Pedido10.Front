@@ -26,18 +26,23 @@ export const routes: Routes = [
     {
         path: '', component: DashboardComponent, canActivate: [usuarioAutenticadoGuard], children: [
             { path: '', component: HomeComponent },
+
             { path: 'clientes', component: ClientesComponent},
             { path: 'clientes/novo', component: AdicionarClientesComponent},
             { path: 'clientes/editar/:id', component: EditarClientesComponent},
+
             { path: 'produtos', component: ProdutosComponent},
             { path: 'produtos/novo', component: AdicionarProdutosComponent},
             { path: 'produtos/editar/:id', component: EditarProdutosComponent},
+
             { path: 'pedidos', component: PedidosComponent},
             { path: 'pedidos/novo', component: AdicionarPedidosComponent},
-            // { path: 'pedidos/editar/:id', component: EditarPedidosComponent},
+            { path: 'pedidos/editar/:id', component: EditarPedidosComponent},
+
             { path: 'usuarios', component: UsuariosComponent},
             { path: 'usuarios/novo', component: AdicionarUsuariosComponent},
             { path: 'usuarios/editar/:id', component: EditarUsuariosComponent},
+            
             { path: 'formas-pgto', component: FormasPgtoComponent},
             { path: 'formas-pgto/novo', component: AdicionarFormasPgtoComponent},
             { path: 'formas-pgto/editar/:id', component: EditarFormasPgtoComponent},

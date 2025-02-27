@@ -1,1 +1,285 @@
-<p>editar-pedidos works!</p>
+<h1 class="app-page-title">
+    {{ title }}
+    <a routerLink="/pedidos" class="btn btn-sm app-btn-secondary float-end px-3">
+      <i class="fas fa-angle-double-left"></i> Voltar
+    </a>
+  </h1>
+  
+  <div class="app-card shadow-sm p-4 border-left-decoration">
+    <div class="app-card-body">
+      <form [formGroup]="pedidoForm" (ngSubmit)="onSubmit()">
+        
+        <!-- Seleção de Cliente -->
+        <div class="mb-3">
+          <label class="form-label">Cliente <small class="text-danger">(Campo Obrigatório)</small></label>
+          <select class="form-select" formControlName="ID_Cliente"
+            [ngClass]="{'is-invalid': pedidoForm.get('ID_Cliente')?.invalid && 
+            pedidoForm.get('ID_Cliente')?.touched}">
+            <option [ngValue]="null">Selecione um cliente</option>
+            <option *ngFor="let cliente of clientes" [ngValue]="cliente.ID_Cliente">
+              {{ cliente.Nome }}
+            </option>
+          </select>
+          <div *ngIf="pedidoForm.get('ID_Cliente')?.invalid && pedidoForm.get('ID_Cliente')?.touched" class="invalid-feedback">
+            O Cliente é obrigatório.
+          </div>
+        </div>
+  
+        <!-- Produtos -->
+        <label class="form-label">Produtos</label>
+        <button class="btn btn-sm app-btn-primary float-end px-3" type="button" (click)="adicionarProduto()"> + </button>
+
+        <table class="table table-no-border table-action" formArrayName="Pedido_Produtos">
+        <tbody>
+            <tr *ngFor="let Pedido_Produto of Pedido_Produtos.controls; let i = index" [formGroupName]="i">
+
+                <td>
+                  <select class="form-control" formControlName="ID_Produto" placeholder="Produto" (change)="getProductInformations(i)"
+                  [ngClass]="{'is-invalid': Pedido_Produto.get('ID_Produto')?.invalid}">
+                    <option [ngValue]="null">- Selecione -</option>
+                    <option *ngFor="let produto of produtos" [ngValue]="produto.ID_Produto">
+                      {{ produto.Nome_Produto }}
+                    </option>
+                  </select>
+                  <!-- Validação -->
+                  <div *ngIf="Pedido_Produto.get('ID_Produto')?.invalid" class="invalid-feedback">
+                    <div *ngIf="Pedido_Produto.get('ID_Produto')?.errors?.['required']">
+                      Selecione um produto.
+                    </div>
+                  </div>
+                </td>
+                
+                <td>
+                  <input class="form-control" type="number" formControlName="QTDE_Produto" placeholder="Quantidade" 
+                  [ngClass]="{'is-invalid': Pedido_Produto.get('QTDE_Produto')?.invalid}"/>
+                  <!-- Validação -->
+                  <div *ngIf="Pedido_Produto.get('QTDE_Produto')?.invalid" class="invalid-feedback">
+                    <div *ngIf="Pedido_Produto.get('QTDE_Produto')?.errors?.['required']">
+                      A quantidade é obrigatória.
+                    </div>
+                    <div *ngIf="Pedido_Produto.get('QTDE_Produto')?.errors?.['min']">
+                      A quantidade deve ser pelo menos 1.
+                    </div>
+                    <div *ngIf="Pedido_Produto.get('QTDE_Produto')?.errors?.['QTDE_Produto']">
+                        {{ Pedido_Produto.get('QTDE_Produto')?.errors?.['QTDE_Produto'] }}
+                    </div>
+                  </div>
+                </td>
+  
+                <td>
+                  <input type="number" class="form-control" formControlName="VLR_Unitario_Produto" placeholder="Valor Unitario" 
+                  [ngClass]="{'is-invalid': Pedido_Produto.get('VLR_Unitario_Produto')?.invalid}"/>
+                  <!-- Validação -->
+                  <div *ngIf="Pedido_Produto.get('VLR_Unitario_Produto')?.invalid" class="invalid-feedback">
+                    <div *ngIf="Pedido_Produto.get('VLR_Unitario_Produto')?.errors?.['required']">
+                      O valor unitário é obrigatório.
+                    </div>
+                    <div *ngIf="Pedido_Produto.get('VLR_Unitario_Produto')?.errors?.['min']">
+                      O valor unitário não pode ser um valor negativo.
+                    </div>
+                    <div *ngIf="Pedido_Produto.get('VLR_Unitario_Produto')?.errors?.['pattern']">
+                      Formato inválido (Máx. 5 dígitos antes da vírgula e 2 depois).
+                    </div>
+                    <div *ngIf="Pedido_Produto.get('VLR_Unitario_Produto')?.errors?.['VLR_Unitario_Produto']">
+                        {{ Pedido_Produto.get('VLR_Unitario_Produto')?.errors?.['VLR_Unitario_Produto'] }}
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <input type="number" class="form-control" formControlName="VLR_Total_Produto" placeholder="Valor Total"
+                  [ngClass]="{'is-invalid': Pedido_Produto.get('VLR_Total_Produto')?.invalid}" readonly/>
+                  <!-- Validação -->
+                  <div *ngIf="Pedido_Produto.get('VLR_Total_Produto')?.invalid" class="invalid-feedback">
+                    <div *ngIf="Pedido_Produto.get('VLR_Total_Produto')?.errors?.['required']">
+                      O total é obrigatório.
+                    </div>
+                    <div *ngIf="Pedido_Produto.get('VLR_Total_Produto')?.errors?.['min']">
+                      O total não pode ser um valor negativo.
+                    </div>
+                    <div *ngIf="Pedido_Produto.get('VLR_Total_Produto')?.errors?.['pattern']">
+                      Formato inválido (Máx. 5 dígitos antes da vírgula e 2 depois).
+                    </div>
+                    <div *ngIf="Pedido_Produto.get('VLR_Total_Produto')?.errors?.['VLR_Total_Produto']">
+                        {{ Pedido_Produto.get('VLR_Total_Produto')?.errors?.['VLR_Total_Produto'] }}
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <button class="btn app-btn-danger" type="button" (click)="removerProduto(i)">Remover</button>
+                </td>
+              </tr>              
+        </tbody>
+        </table>
+
+        <!-- Parcelas -->
+        <!-- <label class="form-label">Parcelas</label>
+        <button class="btn btn-sm app-btn-primary float-end px-3" type="button" (click)="adicionarParcelas()"> + </button> -->
+
+        <div class="mb-3">
+          <label class="form-label">Quantidade de Parcelas</label>
+          <!-- <input type="number" class="form-control" [(ngModel)]="quantidadeParcelas" min="1"> -->
+          <input type="number" class="form-control" [value]="quantidadeParcelas" (input)="atualizarQuantidadeParcelas($event)" min="1">
+          <button type="button" class="btn btn-primary mt-2 me-2" (click)="adicionarParcelas()">Gerar Parcelas</button>
+          <button type="button" class="btn btn-danger mt-2" (click)="this.Parcelas.clear()">Limpar Parcelas</button>
+        </div>
+
+        <table class="table table-no-border table-action" formArrayName="Parcelas">
+        <tbody>
+            <tr *ngFor="let Parcela of Parcelas.controls; let i = index" [formGroupName]="i">
+
+                <td>
+                  <select class="form-control" formControlName="ID_Forma_PGTO"
+                  [ngClass]="{'is-invalid': Parcela.get('ID_Forma_PGTO')?.invalid}">
+                    <option [ngValue]="null">- Selecione -</option>
+                    <option *ngFor="let formaPgto of formasPgto" [ngValue]="formaPgto.ID_Forma_PGTO">
+                      {{ formaPgto.Desc_Forma_PGTO }}
+                    </option>
+                  </select>
+                  <!-- Validação -->
+                  <div *ngIf="Parcela.get('ID_Forma_PGTO')?.invalid" class="invalid-feedback">
+                    <div *ngIf="Parcela.get('ID_Forma_PGTO')?.errors?.['required']">
+                      Selecione uma forma de pagamento.
+                    </div>
+                    <div *ngIf="Parcela.get('ID_Forma_PGTO')?.errors?.['ID_Forma_PGTO']">
+                      {{ Parcela.get('ID_Forma_PGTO')?.errors?.['ID_Forma_PGTO'] }}
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <input class="form-control" type="number" formControlName="Numero_Parcela" placeholder="numero" 
+                  [ngClass]="{'is-invalid': Parcela.get('Numero_Parcela')?.invalid}" readonly/>
+                  <!-- Validação -->
+                  <div *ngIf="Parcela.get('Numero_Parcela')?.invalid" class="invalid-feedback">
+                    <div *ngIf="Parcela.get('Numero_Parcela')?.errors?.['required']">
+                      O numero da parcela é obrigatório.
+                    </div>
+                    <div *ngIf="Parcela.get('Numero_Parcela')?.errors?.['Numero_Parcela']">
+                        {{ Parcela.get('Numero_Parcela')?.errors?.['Numero_Parcela'] }}
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <input type="number" class="form-control" formControlName="Valor_Parcela" 
+                  [ngClass]="{'is-invalid': Parcela.get('Valor_Parcela')?.invalid}" readonly/>
+                  <!-- Validação -->
+                  <div *ngIf="Parcela.get('Valor_Parcela')?.invalid" class="invalid-feedback">
+                    <div *ngIf="Parcela.get('Valor_Parcela')?.errors?.['required']">
+                      O Valor da Parcela é obrigatório.
+                    </div>
+                    <div *ngIf="Parcela.get('Valor_Parcela')?.errors?.['min']">
+                      O Valor da Parcela não pode ser um valor negativo.
+                    </div>
+                    <div *ngIf="Parcela.get('Valor_Parcela')?.errors?.['pattern']">
+                      Formato inválido (Máx. 5 dígitos antes da vírgula e 2 depois).
+                    </div>
+                    <div *ngIf="Parcela.get('Valor_Parcela')?.errors?.['Valor_Parcela']">
+                        {{ Parcela.get('Valor_Parcela')?.errors?.['Valor_Parcela'] }}
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="mb-3">
+                    <input type="date" class="form-control" formControlName="DT_Vencimento" placeholder="Vencimento">
+                        <!-- [ngClass]="{'is-invalid': Parcela.get('Nascimento')?.invalid && Parcela.get('Nascimento')?.touched}"> -->
+                  </div>
+                </td>
+
+                <td>
+                  <div class="mb-3">
+                    <input type="date" class="form-control" formControlName="Data_Pagamento" placeholder="Vencimento" readonly>
+                        <!-- [ngClass]="{'is-invalid': Parcela.get('Nascimento')?.invalid && Parcela.get('Nascimento')?.touched}"> -->
+                  </div>
+                </td>
+
+                <td>
+                  <input type="number" class="form-control" formControlName="Valor_Pago_Parcela" 
+                  [ngClass]="{'is-invalid': Parcela.get('Valor_Pago_Parcela')?.invalid}" readonly/>
+                  <!-- Validação -->
+                  <div *ngIf="Parcela.get('Valor_Pago_Parcela')?.invalid" class="invalid-feedback">
+                    <div *ngIf="Parcela.get('Valor_Pago_Parcela')?.errors?.['required']">
+                      O Valor da Parcela é obrigatório.
+                    </div>
+                    <div *ngIf="Parcela.get('Valor_Pago_Parcela')?.errors?.['min']">
+                      O Valor da Parcela não pode ser um valor negativo.
+                    </div>
+                    <div *ngIf="Parcela.get('Valor_Pago_Parcela')?.errors?.['pattern']">
+                      Formato inválido (Máx. 5 dígitos antes da vírgula e 2 depois).
+                    </div>
+                    <div *ngIf="Parcela.get('Valor_Pago_Parcela')?.errors?.['Valor_Pago_Parcela']">
+                        {{ Parcela.get('Valor_Pago_Parcela')?.errors?.['Valor_Pago_Parcela'] }}
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <select class="form-control" formControlName="Status_Parcela"
+                          [ngClass]="{'is-invalid': Parcela.get('Status_Parcela')?.invalid}"
+                          (change)="onStatusParcelaChange(i)">
+                    <option *ngFor="let parcela of parcelas" [ngValue]="parcela.status">
+                      {{ parcela.description }}
+                    </option>
+                  </select>
+                  <!-- Validação -->
+                  <div *ngIf="Parcela.get('Status_Parcela')?.invalid" class="invalid-feedback">
+                    <div *ngIf="Parcela.get('Status_Parcela')?.errors?.['required']">
+                      Selecione uma forma de pagamento.
+                    </div>
+                    <div *ngIf="Parcela.get('Status_Parcela')?.errors?.['Status_Parcela']">
+                      {{ Parcela.get('Status_Parcela')?.errors?.['Status_Parcela'] }}
+                    </div>
+                  </div>
+                </td>
+
+                <!-- <td>
+                  <button class="btn app-btn-danger" type="button" (click)="removerParcela(i)">Remover</button>
+                </td> -->
+              </tr>              
+        </tbody>
+        </table>
+
+        <div class="mb-3">
+          <label class="form-label">Previsão de Entrega <small class="text-danger">(Campo Obrigatório)</small></label>
+          <input type="date" class="form-control" formControlName="DT_Entrega" placeholder="Entrega Programada"
+                [ngClass]="{'is-invalid': pedidoForm.get('DT_Entrega')?.invalid && pedidoForm.get('DT_Entrega')?.touched}">
+          <div *ngIf="pedidoForm.get('ID_Cliente')?.invalid && pedidoForm.get('ID_Cliente')?.touched" class="invalid-feedback">
+            O data de entrega prevista é obrigatório.
+          </div>
+        </div>
+
+        <select class="form-control" formControlName="Status_Entrega_Pedido"
+                [ngClass]="{'is-invalid': pedidoForm.get('Status_Entrega_Pedido')?.invalid}">
+          <option *ngFor="let statusEntregaPedido of statusEntregaPedidos" [ngValue]="statusEntregaPedido.status">
+            {{ statusEntregaPedido.description }}
+          </option>
+        </select>
+        <!-- Validação -->
+        <div *ngIf="pedidoForm.get('Status_Entrega_Pedido')?.invalid" class="invalid-feedback">
+          <div *ngIf="pedidoForm.get('Status_Entrega_Pedido')?.errors?.['required']">
+            Selecione um status de entrega.
+          </div>
+          <div *ngIf="pedidoForm.get('Status_Entrega_Pedido')?.errors?.['Status_Entrega_Pedido']">
+            {{ pedidoForm.get('Status_Entrega_Pedido')?.errors?.['Status_Entrega_Pedido'] }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="vlrTotalPedido">Valor Total do Pedido</label>
+          <input type="number" id="vlrTotalPedido" class="form-control" [value]="vlrTotalPedido" readonly>
+        </div>
+
+        <!-- Botão de Enviar -->
+        <div class="pt-4 text-end">
+          <button type="submit" class="btn app-btn-primary px-4" [disabled]="pedidoForm.invalid">
+              <i class="fas fa-check me-1"></i>Salvar
+          </button>
+        </div>
+  
+      </form>
+    </div>
+  </div>
+  

@@ -11,7 +11,7 @@
             <table class="table app-table-hover table-custom table-action">
                 <thead>
                     <tr>
-                        <th scope="col" class="cell">Código</th>
+                        <!-- <th scope="col" class="cell">Código</th> -->
                         <th scope="col" class="cell">Cliente</th>
                         <th scope="col" class="cell">Valor Total</th>
                         <th scope="col" class="cell">Status</th>
@@ -23,11 +23,11 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let pedido of pedidos">
-                        <td class="cell fw-medium">{{ pedido.ID_Pedido }}</td>
-                        <td class="cell">{{ pedido.ID_Cliente }}</td>
+                        <!-- <td class="cell fw-medium">{{ pedido.ID_Pedido }}</td> -->
+                        <td class="cell">{{ getClienteNome(pedido.ID_Cliente) }}</td>
                         <td class="cell">{{ pedido.VLR_Total_Pedido | currency:'BRL' }}</td>
                         <td class="cell">
-                            <span [ngClass]="{'badge bg-success': pedido.Status_Entrega_Pedido === 'E', 'badge bg-warning': pedido.Status_Entrega_Pedido === 'P'}">
+                            <span [ngClass]="{'badge bg-success text-white': pedido.Status_Entrega_Pedido === 'E', 'badge bg-warning': pedido.Status_Entrega_Pedido === 'P'}">
                                 {{ pedido.Status_Entrega_Pedido === 'E' ? 'Entregue' : 'Pendente' }}
                             </span>
                         </td>

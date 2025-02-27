@@ -12,8 +12,8 @@
               <!-- <th scope="col" class="cell">#</th> -->
               <th scope="col" class="cell"> Nome do Usuário</th>
               <th scope="col" class="cell"> Email</th>
-              <th scope="col" class="cell"> Plano de Usuário</th>
-              <th scope="col" class="cell"> Status do Usuário</th>
+              <!-- <th scope="col" class="cell"> Plano de Usuário</th>
+              <th scope="col" class="cell"> Status do Usuário</th> -->
               <th scope="col" class="cell"> Tipo_Usuario</th>
               <th colspan="2" class="cell"></th>
             </tr>
@@ -23,15 +23,15 @@
               <tr *ngFor="let usuario of usuarios">
                 <!-- <td scope="row" class="cell">{{ usuario.ID_Cliente }}</td> -->
                 <td class="cell fw-medium">{{ usuario.Nome }}</td>
-				<td class="cell">
-				  <p class="text-xs text-secondary mb-0">{{ usuario.Email }}</p>
-				</td>
                 <td class="cell">
+                  <p class="text-xs text-secondary mb-0">{{ usuario.Email }}</p>
+                </td>
+                <!-- <td class="cell">
                   <p class="text-xs text-secondary mb-0">{{ usuario.Plano_Usuario }}</p>
                 </td>
                 <td class="cell">
                   <p class="text-xs text-secondary mb-0">{{ usuario.Status }}</p>
-                </td>
+                </td> -->
                 <td class="cell">
                   <p class="text-xs text-secondary mb-0">{{ usuario.Tipo_Usuario }}</p>
                 </td>
