@@ -75,7 +75,7 @@ export class EditarProdutosComponent implements OnInit {
       
       this._produtoService.updateProduto(this.id, produtoForm).subscribe({
         next: (response) => {
-          this._router.navigate(['/produtos'], { queryParams: { sucesso: '1' } });
+          this._router.navigate(['/produtos'], { queryParams: { sucesso: '2', nome_produto: produtoForm.Nome_Produto } });
         },
         error: (error) => {
           if (error.status === 400) {

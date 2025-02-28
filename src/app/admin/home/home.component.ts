@@ -11,6 +11,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { CommonModule } from '@angular/common';
+import { AuthUserService } from 'app/services/auth-user.service';
 
 @Component({
   selector: 'app-home',
@@ -30,8 +31,14 @@ import { CommonModule } from '@angular/common';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
+  title: string = "Home";
+  nomeUsuario: string = "";
+
+  constructor(private _authUserService: AuthUserService) {}
 
   ngOnInit(): void {
+    this.nomeUsuario = this._authUserService.obterUsuarioLogado?.Nome || "";
+
   }
 
 }

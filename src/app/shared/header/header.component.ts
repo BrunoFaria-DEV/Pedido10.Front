@@ -3,6 +3,7 @@ import { AuthHelperServiceService } from '../../services/helpers/auth-helper-ser
 import { SidebarService } from 'app/services/layout/sidebar.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { AuthUserService } from 'app/services/auth-user.service';
 
 @Component({
   selector: 'app-header',
@@ -15,10 +16,17 @@ import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 })
 export class HeaderComponent implements OnInit {
   faRightFromBracket = faRightFromBracket;
+  nomeUsuario: string = "";
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    this.nomeUsuario = this._authUserService.obterUsuarioLogado?.Nome || "";
+  }
 
-  constructor(private authHelperServiceService: AuthHelperServiceService, private sidebarService: SidebarService) {}
+  constructor(
+    private authHelperServiceService: AuthHelperServiceService, 
+    private sidebarService: SidebarService,
+    private _authUserService: AuthUserService
+  ) {}
   deslogar(){
     this.authHelperServiceService.deslogar();
   }

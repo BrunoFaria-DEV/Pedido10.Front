@@ -41,16 +41,43 @@ export class ProdutosComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params['sucesso'] === '1') {
         Swal.fire({
-          title: 'Produto cadastrado!',
-          text: 'O produto foi adicionado com sucesso.',
+          title: `Produto ${params["nome_produto"]} cadastrado!`,
+          text: 'O produto foi cadastrado com sucesso.',
           icon: 'success',
-          confirmButtonText: 'Ok'
+          confirmButtonText: 'Confirmar'
         }).then(() => {
-          // Após o fechamento do alerta, limpamos a URL removendo o parâmetro
           this.router.navigate([], {
             relativeTo: this.route,
             queryParams: { sucesso: null },
-            queryParamsHandling: 'merge' // 'merge' irá manter outros parâmetros de query que possam existir
+            queryParamsHandling: 'merge' 
+          });
+        });
+      }
+      else if (params['sucesso'] === '2') {
+        Swal.fire({
+          title: `Produto ${params["nome_produto"]} atualizado!`,
+          text: 'O produto foi atualizado com sucesso.',
+          icon: 'success',
+          confirmButtonText: 'Confirmar'
+        }).then(() => {
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { sucesso: null },
+            queryParamsHandling: 'merge' 
+          });
+        });
+      }
+      else if (params['sucesso'] === '3') {
+        Swal.fire({
+          title: `Produto ${params["nome_produto"]} excluido!`,
+          text: 'O produto foi excluido com sucesso.',
+          icon: 'success',
+          confirmButtonText: 'Confirmar'
+        }).then(() => {
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { sucesso: null },
+            queryParamsHandling: 'merge' 
           });
         });
       }
@@ -76,6 +103,18 @@ export class ProdutosComponent implements OnInit {
 
       if (response) {
         await lastValueFrom(this.productService.deleteProduto(id));
+        Swal.fire({
+          title: `Produto excluido!`,
+          text: 'O produto foi excluido com sucesso.',
+          icon: 'success',
+          confirmButtonText: 'Confirmar'
+        }).then(() => {
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { sucesso: null },
+            queryParamsHandling: 'merge' 
+          });
+        });
         this.carregarProdutos();
       }
 

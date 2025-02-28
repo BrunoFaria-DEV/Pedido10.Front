@@ -66,7 +66,7 @@ export class AdicionarProdutosComponent implements OnInit {
         this._produtoService.addProduto(produto).subscribe({
           next: (response) => {
             console.log("Produto adicionado com sucesso:", response);
-            this._router.navigate(['/produtos'], { queryParams: { sucesso: '1' } });
+            this._router.navigate(['/produtos'], { queryParams: { sucesso: '1', nome_produto: produto.Nome_Produto } });
           },
           error: (error) => {
             if (error.status === 400) {
